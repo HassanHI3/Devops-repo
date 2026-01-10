@@ -1,0 +1,33 @@
+Git 1/5
+
+- Tracks changes to code , with undo , revert , inspect and collaborate
+- Full history stored locally 
+
+
+SVN = subVersion = centralised version control - only one copy 
+- Slow 
+- Server outages
+- Network needed
+- Branch conflicts
+
+VCS = version control system (GIT) - Distributed version control 
+
+(GIT)
+- fast 
+- resilent to outages 
+- working offline 
+- fast branches / merging  
+
+
+Git = take snapshot of the whole repo/file at that time 
+- Shows whole new file with one line changed 
+
+- USES key-value stores 
+- if the content stays the same = git refuses the same object 
+- Git is content address   not file-named based 
+
+
+Files stored as : 
+- Blobs= files         
+- trees = directories    
+- commits = commits 
