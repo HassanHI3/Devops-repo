@@ -1,5 +1,4 @@
-Git 6/6 hygiene and mistakes
-
+Good practices:
 - Write good commit messages 
 - One logical change per commit 
 - Avoid bad commit names like “fixfixfix33”
