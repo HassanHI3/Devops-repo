@@ -1,0 +1,33 @@
+Git 4/5
+
+Git stash - temporarily saving unsaved changes on your local machine 
+Git stash pop = your bring back the changes but it removes them from the stash list now 
+Git stash apply = you go back onto the branch and bring back the changes
+Git stash list - lists all the temp uncommitted changes 
+
+Git revert <commit> = this undoes that commit - find the commit hash in git log 
+Git reset <commit> = moves branch pointer back (soft=keep changes) (mixed unstaged) (hard nuke )
+Git cherry-pick <commit> = apply a specific commit to the branch that your on
+
+
+Fork and pull requests:
+When you don’t have access to a remote repo , you can clone it = FORK 
+
+- Git clone the repo 
+- Make changes and commit (push) to your FORK ( local repo) 
+- Open a pull request so that it can be reviewed and merged into the main branch/project 
+- Repo owners review + it’s used a lot in open source 
+
+
+Without access:
+Local rep -> commit changes (push ) -> your FORK -> open pull request -> merged into main branch/repo
+
+With access:
+Local repo -> commit changes (push) -> updated local repo -> make pull request -> merged into main branch/repo
+
+
+Trunk based Development:
+All devs commit to main branch / short lived branches 
+Have string CI/testing gates = good testing coverage and is automatically tested = good code make it to MAIN DEV branch
+Used by fast moving orgs like Google 
+
