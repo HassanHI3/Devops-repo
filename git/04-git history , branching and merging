@@ -12,8 +12,6 @@ Github = Git repo hosting and collaboration
 - only online
 - owened by Microsoft 
 
-
-
 Git branching and merging:
 Git branch - shows u the list of branches on ur repo and the one ur currently on 
 Git checkout -b = creating new branch and switching 
@@ -24,11 +22,9 @@ Git switch = just switching branches
 Git branch -d = deleting branch 
 Git merge < dk-123 > = your on the dev (main) and are merging this feature branch in 
 
-
 Fast forward vs recursive merges:
 Fast forward merge = if main DEV has had no updates 
 Recursive merge ( fix merge conflicts ) = if main DEV brnach has had changes since you branched off 
-
 
 Rebase vs merge:
 Merge = keeps history and is good for collaboration 
