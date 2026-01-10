@@ -1,5 +1,3 @@
-Git 2.5/5
-
 .git/refs = this is where your tags ( for special releases ) and branches are 
 
 .git /objects = this is where your blobs , trees and commits are 
