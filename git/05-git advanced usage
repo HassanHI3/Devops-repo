@@ -1,5 +1,3 @@
-Git 4/5
-
 Git stash - temporarily saving unsaved changes on your local machine 
 Git stash pop = your bring back the changes but it removes them from the stash list now 
 Git stash apply = you go back onto the branch and bring back the changes
