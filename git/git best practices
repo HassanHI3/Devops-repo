@@ -1,0 +1,28 @@
+Git 5/5 hygiene and mistakes
+
+- Write good commit messages 
+- One logical change per commit 
+- Avoid bad commit names like “fixfixfix33”
+
+
+Pre-commit automation - linters:
+So we use linters & hook recommit tools into pre commits - to run checks - pass - gets committed 
+
+- Help enforce coding standards + standards
+- Catch mistakes 
+- Prevent broken code to repo 
+- Hook into CI pipelines for formatting + testing + scanning 
+
+
+Common mistakes:
+- Forgetting to start off with git pull  to get the latest changes to avoid merge conflicts 
+- Force pushing commits to shared branches 
+- Committing screws like .env 
+- Merging w/out review 
+- Not using .gitignore properly 
+
+Common mistakes in orgs:
+- Preventing secrets leak 
+- Using gir.secrets , trofflehig 
+- Cleaning secrets from history 
+- Auditing repo contributors + log 
