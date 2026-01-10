@@ -1,0 +1,48 @@
+Git 2.5/5
+
+.git/refs = this is where your tags ( for special releases ) and branches are 
+
+.git /objects = this is where your blobs , trees and commits are 
+
+.git/config = repo specific details 
+
+.git/HEAD = shows you where you are working 
+
+.git/index = staging area specific info 
+
+
+-> Working Directory (Writing & editing test) 
+-> move to staging area ( changes into .git/index ) - preparing to commit 
+-> commit changes ( stored in .git/objects )
+-> (You push &  branch ref in .git /refs/ heads/ DK-13120 updates
+
+
+Everyday workflow:
+Working directory -> git add -> staging (index buffer ) -> git commit -> committed into repo 
+
+
+Git commands:
+
+Git config - set user/email/text editor = customising git 
+Git help <command> = built in docs
+
+Git init -> starts new git repo = this is step 1 and pushing to GitHub is step 2 
+Git add -> adds changes to staging area 
+Git commit -> adds staged changes to repo 
+
+Git diff -> shows u the difference between working directory and staging area 
+Git diff --staged = compare staged changes with last commit 
+
+Git log -> commit history with names and id’s
+Git log --oneline --graph = visual summary of commit history 
+Git log —oneline —graph —all = compact visual full view 
+
+Git revert - creates a new commit undoing the last commit 
+
+Git clone - copy a remote repo on local setup 
+Git rm - remove files 
+Git mv - rename folders 
+Git restore - undo file changes = if there is a conflict
+
+Git blame <file> = who changed each line 
+Git reflog = view local HEAD history 
