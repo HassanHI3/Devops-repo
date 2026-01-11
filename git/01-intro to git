@@ -1,3 +1,4 @@
+Git:
 - Tracks changes to code , with undo , revert , inspect and collaborate
 - Full history stored locally 
 
@@ -19,7 +20,7 @@ Git = take snapshot of the whole repo/file at that time
 - if the content stays the same = git refuses the same object 
 - Git is content address   not file-named based 
 
-Files stored as : 
+Files stored as: 
 - Blobs= files         
 - trees = directories    
 - commits = commits 
