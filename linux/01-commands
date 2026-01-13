@@ -1,0 +1,91 @@
+Linux Fundamentals
+This section builds on core Linux usage, focusing on file operations, text processing, permissions, users/groups, environment variables, shells, and standard streams.
+
+1. File & Directory Navigation
+Basic Commands
+cd – change directory
+cd .. – move up one directory
+cd / – go to the root directory
+ls – list directory contents
+ls -a – include hidden files
+ls -l – long listing with permissions
+ls -la – long listing including hidden files
+
+2. File Creation & Viewing
+Creating Files
+touch file.txt – create an empty file
+vim file.txt – create/edit a file (creates if it doesn’t exist)
+Viewing File Contents
+cat file.txt – display file contents
+head file.txt – first 10 lines
+head -n 5 file.txt – first 5 lines
+tail file.txt – last 10 lines
+tail -n 3 file.txt – last 3 lines
+Pipelines
+head -n 10 file.txt | tail -n 5
+Takes the first 10 lines, then outputs the last 5 of those
+| (pipe) passes output of one command to another
+
+3. Writing & Combining Files
+Redirecting Output
+echo "hello" > file.txt – overwrite file
+echo "new line" >> file.txt – append to file
+Combining Files
+cat file1.txt file2.txt > combined.txt – combine into new file
+cat file1.txt >> file2.txt – append contents of one file to another
+
+4. Copying, Moving & Deleting
+Copy
+cp file.txt file_copy.txt – copy file
+cp -r my_directory my_directory_copy – copy directory recursively
+Move / Rename
+mv file.txt backup.txt – rename file
+mv file.txt my_directory/ – move file into directory
+Delete
+rm file.txt – delete file
+rm -r my_directory – delete directory recursively
+⚠️ Dangerous Command
+rm -rf / – forcefully deletes the entire system (DO NOT RUN)
+
+5. Programs, Binaries & PATH
+Programs: Written by developers to perform tasks
+Binaries: Compiled versions of programs
+How Commands Work
+Shell interprets command
+Searches directories listed in $PATH
+Executes the binary
+PATH Environment Variable
+Contains directories where executables live (e.g. /bin, /sbin)
+echo $PATH – display PATH value
+
+6. Vim Editor Basics
+Modes
+Command mode – default
+Insert mode – press i
+Visual mode – press v
+Press Esc to return to command mode
+Saving & Exiting
+:wq – save and quit
+:q! – quit without saving
+Navigation (Command Mode)
+h – left
+l – right
+j – down
+k – up
+:4 – jump to line 4
+Editing
+dd – delete entire line
+D – delete from cursor to end of line
+y – yank (copy)
+p – paste
+u – undo
+Ctrl + r – redo
+Search
+/example – search for word
+n – next result
+N – previous result
+Extras
+:set number – show line numbers
+:set nonumber – hide line numbers
+:syntax on – enable syntax highlighting
+
