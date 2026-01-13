@@ -7,11 +7,13 @@ Permission Values
 Read = 4
 Write = 2
 Execute = 1
+
 Examples
 chmod 700 file.txt – owner full access
 chmod u=rw,g=rw,o=r file.txt
 chmod 627 file.txt → -rw--w-rwx
-🟢 Green file name = executable
+
+Green file name = executable
 Running Scripts
 chmod +x script.sh
 ./script.sh
