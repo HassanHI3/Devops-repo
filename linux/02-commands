@@ -1,0 +1,81 @@
+7. File Permissions
+Permission Structure
+-rwxr-xr--
+- = file, d = directory
+Owner | Group | Others
+Permission Values
+Read = 4
+Write = 2
+Execute = 1
+Examples
+chmod 700 file.txt – owner full access
+chmod u=rw,g=rw,o=r file.txt
+chmod 627 file.txt → -rw--w-rwx
+🟢 Green file name = executable
+Running Scripts
+chmod +x script.sh
+./script.sh
+
+8. Ownership & Groups
+Change Ownership
+sudo chown newuser file.txt
+sudo chgrp admin2 file.txt
+sudo chown newuser:admin2 file.txt
+sudo chown -R newuser:admin2 my_directory
+
+9. Users & Groups Management
+Users
+sudo useradd newuser
+sudo passwd newuser
+su - newuser – switch user
+whoami – confirm current user
+exit – leave user
+Groups
+cat /etc/group – list all groups
+sudo groupadd devops
+sudo groupdel devops
+sudo usermod -aG sudo newuser
+sudo gpasswd -d newuser devops
+Verify:
+groups
+
+10. Sudo & Root
+sudo – run command with elevated privileges
+sudo su – switch to root user
+exit – leave root
+Logs
+sudo tail /var/log/auth.log – view recent sudo activity
+11. Shells
+Check Current Shell
+echo $SHELL
+Change Shell
+sudo chsh -s $(which zsh) $(whoami)
+Shell Config Files
+.bashrc
+.zshrc
+Located in home directory (~/)
+
+12. Environment Variables
+Common Variables
+PATH
+HOME
+USER
+SHELL
+Temporary Variable
+export JAVA_HOME=/usr/bin/java
+echo $JAVA_HOME
+13. Standard Streams & Redirection
+Streams
+stdin – input (keyboard)
+stdout – normal output
+stderr – error output
+Redirection
+> overwrite
+>> append
+2> redirect stderr
+&> redirect stdout + stderr
+Examples
+ls nonexistent 2> error.txt
+ls nonexistent my_directory &> all_output.txt
+ls nonexistent &> /dev/null
+/dev/null discards output
