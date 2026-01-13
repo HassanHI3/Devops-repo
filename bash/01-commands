@@ -1,0 +1,142 @@
+1. Script Basics
+Start scripts with a shebang:
+#!/bin/bash
+Save as .sh
+Make executable:
+chmod +x script.sh
+
+2. Running Scripts
+./script.sh        # runs executable in current dir
+bash script.sh     # runs via bash explicitly
+sh script.sh       # may use a different shell
+
+3. Variables
+name="value"        # no spaces around =
+echo $name
+echo ${name}        # clearer, safer
+
+Variable Types
+greeting="hello"
+count=42
+fruits=(apple banana orange)
+
+4. User Input
+read variable
+read -p "Enter name: " name
+
+5. Script Parameters
+$0 – script name
+$1 $2 $3 – positional parameters
+$@ – all parameters
+$# – number of parameters
+
+6. Arithmetic
+result=$((5 + 3))
+area=$((length * width))
+
+
+Operators: + - * / % ++
+
+7. Conditionals
+if [ condition ]; then
+  command
+elif [ condition ]; then
+  command
+else
+  command
+fi
+
+Numeric Comparisons
+-eq -ne -lt -gt -le -ge
+String Comparisons
+== != -z -n
+
+File Tests
+-f file exists
+-d directory exists
+-r readable
+-w writable
+-x executable
+
+Logical Operators
+[[ cond1 && cond2 ]]
+[[ cond1 || cond2 ]]
+! condition
+
+8. Loops
+While Loop
+while [ condition ]; do
+  command
+done
+
+For Loops
+for i in {1..5}; do
+  command
+done
+
+for item in "${array[@]}"; do
+  command
+done
+
+for ((i=1; i<=5; i++)); do
+  command
+done
+
+Loop Control
+
+break – exit loop
+
+continue – skip iteration
+
+9. Functions
+my_function() {
+  local var="$1"
+  echo "$var"
+}
+
+
+Call with: my_function value
+
+Access params with $1, $2
+
+local limits scope to function
+
+Return Codes
+return 0   # success
+return 1   # failure
+
+
+Check with:
+
+echo $?
+
+10. Error Handling
+$?          # exit status of last command
+set -e      # exit on error
+set -u      # exit on unset variables
+set -x      # debug (print commands)
+set +x      # disable debug
+
+
+Best practice:
+
+set -eux
+
+11. Environment Variables
+Common variables:
+$HOME
+$USER
+$PATH
+$SHELL
+export VAR=value
+
+12. File Operations
+Read files line by line
+Write with > (overwrite) and >> (append)
+Test file properties before operating on them
+
+13. Input Validation
+Validate user input before use
+Handle empty or invalid values
+Fail safely with meaningful errors
+
