@@ -12,7 +12,6 @@ ls -l –> long listing with permissions
 ls -la –> long listing including hidden files
 
 2. File Creation & Viewing
-
 Creating Files
 touch file.txt –> create an empty file
 vim file.txt –> create/edit a file (creates if it doesn’t exist)
