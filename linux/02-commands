@@ -79,6 +79,7 @@ Redirection
 >> append
 2> redirect stderr
 &> redirect stdout + stderr
+
 Examples
 ls nonexistent 2> error.txt
 ls nonexistent my_directory &> all_output.txt
