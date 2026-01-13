@@ -27,11 +27,12 @@ sudo chown -R newuser:admin2 my_directory
 Users
 sudo useradd newuser
 sudo passwd newuser
-su - newuser – switch user
-whoami – confirm current user
-exit – leave user
+su - newuser –> switch user
+whoami –> confirm current user
+exit –> leave user
+
 Groups
-cat /etc/group – list all groups
+cat /etc/group –> list all groups
 sudo groupadd devops
 sudo groupdel devops
 sudo usermod -aG sudo newuser
@@ -45,6 +46,7 @@ sudo su – switch to root user
 exit – leave root
 Logs
 sudo tail /var/log/auth.log – view recent sudo activity
+
 11. Shells
 Check Current Shell
 echo $SHELL
@@ -64,6 +66,7 @@ SHELL
 Temporary Variable
 export JAVA_HOME=/usr/bin/java
 echo $JAVA_HOME
+
 13. Standard Streams & Redirection
 Streams
 stdin – input (keyboard)
