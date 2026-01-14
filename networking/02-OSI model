@@ -1,0 +1,65 @@
+Networking p2/7
+
+TCP = REQUIRES HANDSHAKE 
+ERROR CHECKING 
+BIDIRECTIONAL FLOW 
+PRIOR CONNECTION NEEDED
+
+OSI MODEL - 
+
+? Communication model - provides a standard way devices communicate over a network 
+- Ensures devices over the network can communicate and understand each other 
+
+Pros - communication Model
+- Application independence - so that u wouldnt have to create different versions of the same app
+- W/out standard model - apps would have to understand the underlining network 
+- Upgrading network equipment is easier  “as they talk the same language”
+- Innovation can happen independently without affecting the entire model 
+
+
+7 LAYERS - Application , presentation, sessions , transport , network , data link , physical 
+
+
+1. Physical - ( physical structure like fibre ) - transmits raw bit streams over a physical medium - but everyone can receive that data - components ( cables , switches , network interface cards ) - unordered/random
+2. Data link - (ethernet ) - layer provides node to node data transfer & ensures data got to the right node - puts data packets in frames ensuring they get to the right place - components ( MAC addresses , switches ) 
+3. Network layer - manages how data is sent - best path over a network - manages packet forwarding including routers - components ( ip addresses / routers )
+4. Transport - manages reliable data transfer to the upper layers - components (TCP / UDP )
+5. Session layer - manages sessions between applications - establishes + terminates connections -- components ( session management protocols)
+6. Presentation layer - makes sure data is in a reasonable/formatted layout + data is unable - components( encryption / data formatting )
+7. Application layer - network services to directly to apps end user layer - components ( HTTP , FTP )
+
+
+All People Seem To Need Data Processing
+
+Physical - data is sent via bits thur fibres 
+Data link - data converted into frames and given MAC address 
+Network - data is given ip address and fgures out where server is 
+Transport - uses tcp ( protocol ) , split into segments , given port number 
+Session - secure session is started
+Presentation - data is encrypted and formatted 
+Application - post request 
+
+1. Data is converted into digital bits 
+2. Data is then given a MAC address and converted into frames 
+3. Data is then converted from frames into an ip packet/address and has to figure out what server to go to 
+4. Data is then thru tcp protocol given a port number and is told where to go , split into segments tcp segments 
+5. Request comes in to secure a session now 
+6. Data is then formatted and encrypted 
+7. Data is presented and interpreted request 
+
+
+TCP/IP MODEL 4 LAYERS
+- Application layer - network protocols work here - http
+- Transport - e2e coomucaiton and data transfer / ump 
+- Internet layer - logical addressing and routing data from different networks  - ip address ( handles the moving of ur package thru multiple ways 
+- Network access layer - encompasses layer 1/2 of the OSI model with the layer consisting of ethernet , wireless LAN 
+
+
+OSI Layers ( sender POV)
+ * User sends a POST request with JSON data to the HTTPS server *
+
+HTTP - is a message to ur client (browser, app, API) sends to server asking it to do something 
+GET -> get data 
+POST -> send data 
+PUT -> update data 
+DELETE -> delete data 
