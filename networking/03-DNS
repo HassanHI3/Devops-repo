@@ -1,0 +1,112 @@
+NETWORKING 3/7
+
+? DNS - domain name system                USER sends request -> DNS resolver -> Root server -> TLD -> (Authoritative) Name Server ( looks at the zone files & record) -> DNS resolver -> USER  
+
+DNS allows us to keep track of websites instead of IP addresses
+- Translate domain names into IP Addresses  -
+- Simplifies navigation across the internet - 
+- You write the domain name but the computers are talking via IP Addresses - 
+
+DNS components :
+
+Name servers - they load DNS settings and configurations 
+(authoritative/recursive)
+- Hold the actual DNS records and when queried hold info like ip addresses (authoritative)
+- Don’t hold actual DNS record and instead query them thru other name servers on behalf of their client (recursive)
+
+User query - (google.com) -> DNS server (authoritative) 
+-> returns the name spaces  (google.com) is hosted on 
+
+Command : dig ns google.com  /  dig +short ns google.com
+
+
+*^ Zone files - stored inside name servers & store information about the domain 
+- They help name servers about how to get to domain and queries on domain if the name space doesn’t know 
+- They organise and readable format 
+
+
+
+DNS components - *record*
+
+Zone files comprised of multiple resource records  - info about hosts , name servers etc 
+Comprised of : _
+
+- Record name - The domain name being queried
+- TTL ( time to live) how long record is valid b4 refresh required 
+- Class - name space of the record info 
+- Type - type of record - aaaa , mx  , cname
+- Data - the actual info corresponding to the record type = like ip address for an A record 
+
+
+? Types of record:
+- A = maps the domain name to its  ipv4 address like google.com->216.58.204.79
+- AAAA = (older brother) maps the domain name to a ipv6 address
+- CNAME = pointing a domain to another domain name instead of an ip address ( handy for multiple domains for the same ip address ) 
+- MX = specfies a  mailserver for a domain 
+- TXT = stores text info for a domain ( can insert any text into dns ) ** go back over 
+
+
+? Etc/hosts file 
+- A local file in commuter 
+- Maps domain names to ip address in its cache 
+- Take precedence over DNS for some specific scenarios 
+- Always checked first before the DNS resolver looks around - good for testing and troubleshooting 
+
+
+DNS Hierarchy & distribution  for google.com [ theory ]
+- DNS ROOT -> points us in the direction of the .com TLD 
+- TLD -> points us in the direction of the specific Zone google is in ( divided ) 
+- Zone -> that google is in has a specfic zone file and is managed by name space 
+- Zone file -> holds the info about google.com host/subdomains and records 
+- ( in this example it holds an A RECORD) = a record maps the domain name directly to a ipv4 address  
+
+
+DNS hierarchy in practice 
+USER sends request -> DNS resolver -> Root server -> TLD -> (Authoritative) Name Server ( looks at the zone files & record) -> DNS resolver -> USER  
+
+
+? Importance of DNS resolution for DEVOPS engineers 
+- Ensures service availability 
+- Essential for troubleshooting DNS issues 
+- Critical for configuring and managing network services 
+
+
+
+Domain Registrar VS DNS Hosting Provider 
+
+Domain Registrar = you buy and register domain name ( like google.com ) 
+
+DNS hosting provider = operates DNS name servers for you
+-  provider that manages your DNS record + queries so people find your ip addresses with no issues
+- Convenient  
+- Ex. Like Route 53 ( AWS ) / goDaddy where you can buy the domain and then they can run ur name servers for you
+
+USER request -> DNS resolver -> Root server -> TLD -> DNS ZONE (managed by) - DNS(Authoritative) Name Server (hosted by ROUTE 53) -> DNS resolver -> USER  
+
+
+
+Client → checks local cache & /etc/hosts → sends request to DNS Resolver
+
+DNS Resolver → checks its cache → queries DNS Root Server
+
+DNS Root Server → points to .com TLD Name Server
+.com TLD Name Server 
+→ returns Authoritative Name Server for google.com
+
+DNS Resolver 
+→ queries Authoritative Name Server
+Authoritative Name Server 
+→ returns DNS records (IP address)
+
+DNS Resolver → caches the result → returns IP address to Client
+
+Server = dns resolver / router gave u the ip address 
+Address = #53 port number typically used for dns lookups 
+
+Non authoritative = means it checked the local cache ( etc file ) or the dns resolver cache for the answer 
+= 4 ip addresses given as usable 
+
+
+Multiple name spaces because if one goes down the others kick in 
+A record 
+AAAA records 
