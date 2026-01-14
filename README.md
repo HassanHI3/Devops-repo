@@ -1,17 +1,20 @@
 # devops-learning-repo
- CoderCo DevOps Learning Repository
+DevOps Learning Repository
 
-This repository documents my DevOps learning journey through the CoderCo course.
-It covers both theoretical notes and hands-on practice.
+This repository documents my DevOps learning journey that covers both theoretical notes and hands-on practice.
 
-## Topics Covered
+## Topics aiming to cover
 - Linux
 - Bash scripting
 - Git & GitHub
 - Networking fundamentals
-- Docker
+- Docker and containers
+- AWS
+- Terraform
+- CI/CD
+- Kubernetes
 
 ## Goal
 - Build strong DevOps fundamentals
 - Practice real-world tooling
-- Create a reference I can revisit and explain in interviews
+- Create a reference I can revisit
