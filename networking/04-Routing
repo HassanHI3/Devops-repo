@@ -1,0 +1,41 @@
+Network Routing 4/7 - essential for internet functionality 
+
+? What is routing - the process of figuring out which path your data/ requests take to travel across a network 
+
+? Important - makes sure that data/requests reach the right place/destination quickly & efficiently 
+
+? How routing works - Routers (hardware) determines which path the data should take and the  routing table  is list of directions that says if you want to get “here” take this route 
+
+Computer 1 -> router ( checks routing table ) -> jumps thru network - > computer 2 
+
+
+? Why routing important in DEVOPS - 
+
+: good route ensures data packets - take most efficient path = reduced latancy + net perform
+: ensures reliable application delivery 
+: crucial for managing complex infrastructure
+
+
+? Types of routing -
+
+Static routing = set up the routes manually + stay the same and don’t change ( directions ) ( old school map )
+- Manually configured 
+- Fixed oath by network admin 
+- Simple but not scalable for larger networks ( headache manually ) 
+
+Dynamic routing = Routes update in real time so the network can figure out the best route ( directions ) ( gps)
+- Automatically adjusts routes - even if there are problems ( ex. more traffic on a path on the network )
+- Uses Routing protocols to find best path for data 
+- Scalable and adaptable - suitable for large and changing networking seamlessly 
+
+
+? What are routing protocols -  [algorithms / Sets of rules] for routers 2 router communication to figure out the best path for traffic / data 
+
+- Automate route updates
+- Enhance network efficiency = improve latency , reduce congestion/ traffic 
+
+? Examples of routing protocols 
+
+OSPF = open shortest path first -  single organisation network - ( internal gps for shortest path in network ) 
+
+BGP = Border gateway protocol - big networks talk to different organisations - make sure data/traffic routed effiencetly between these different location son the internet  ( for big distributed environments  ) 
