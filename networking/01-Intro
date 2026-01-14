@@ -1,0 +1,95 @@
+Networking p1/7  
+Overview of computer networks       “Everything happens over a network”
+
+Computer network = group of devices when connected to each other allow them to share information and resources
+
+
+Essential devices that make up a network: SWITCHES , ROUTERS , FIREWALLS 
+
+- Switches = "manager for your local party network keeping things tidy “ ( local )
+-  it connects the multiple devices in the LAN + ensures smooth data flow ( no congestion + communication)
+
+- Routers : “traffic cops for network and a route to connect to the internet” (wide)
+- Directs traffic between different networks/ LAN’s -  I.e your home wifi to the internet 
+
+- Firewalls = " Security guard for ur network”
+- Protects network against unauthorised access 
+- Monitors incoming and outgoing network traffic + Based no predetermined security rules 
+
+
+
+Different types of computer networks include : 
+
+- Local area network (LAN) = small + provides internet access + connects devices to share resources - covers limited area 
+- Wide area network (WAN) = Large area (city/country) + connects multiple LAN’s = facilitating resource sharing + data transfer for far distances 
+- +8 more 
+
+“think as ur home wifi network”^
+
+
+Pros of General networks 
+- Resource sharing : communication and resource sharing ( files) between devices 
+- Internet functionality : Browse the web and stream 
+- Application Support : Support application data between/ to a servers over a network    - then server processes the data and sends back a response 
+
+
+
+Pros of general networks (Devops Specific)
+- Server interaction:  allows for communication between servers and applications =  my local server and EC2 server in the cloud 
+- Deployment:  Important for launching and updating apps 
+- Management: Important for managing and monitoring infrastructure work = help spotting problems 
+- Optimisation : improves troubleshooting , performance and scalability = so data to run smoothly + efficiently 
+
+
+
+IP Addresses & Mac Address.   “Without IP address , devices wouldn’t know where to send and receive data”
+
+Devices have 2 unique identifiers as an ip address and a MAC address :
+IP address is unique identifier for devices changing depending on what network your on 
+MAC address is a unique identifier that is permanent and doesn’t change regardless of network 
+
+
+? Types of IP Addresses 
+- IPV4 = 32 bit + 4 decimal numbers and becoming outdated 
+- IPV6 = 128 bit + 4 groups of hexadecimal digits separated with colons + provides more address + better security + simplified addresses assignment 
+
+
+? IP Address ( internet protocol address) = unique identifier/number given to each devices on a network 
+- Allows devices to locate + communicate with each other 
+- Helps the data know where to go and how to get back to u 
+- USE CASES = where to send and receive data , identify which device is causing an issue on a network 
+
+
+? MAC address = operates at the data link layer 
+- Facilitates devices identifier within a local network 
+- Essential for network communication and security 
+- USE CASES = MAC address filtering (to connect to ur router) , identifier for which hardware in trouble 
+
+
+
+Intro to ports and protocols 
+
+? Ports = 2 way door for data in a network - flows in and out - but only certain type of info can be used certain ports 
+- Neat way to organise that kind of traffic goes where 
+- I.e web traffic usually comes in thru port 80 for HTTP
+ 
+Protocols = the rules for the data on how its formatted and transmitted across a network 
+
+pports + protocols = ports make sure the data gets to the right application on ur device and protocol make sure the data is formatted right and is understandable + formatted = communication 
+
+? Types of protocols? TCP VS UDP 
+
+TCP = Transmission control protocol “careful planner”
+- Connection oriented
+- Send everything in order and anything lost it resends so nothing gets lost + error checks , flow control + bidirectional flow 
+
+- USE CASES = web browsing you need inn the right order , file transfer , emails , reliability 
+
+
+UDP =
+- One way traffic 
+- Simple protocol to send & receive data 
+- Prior communication not needed 
+- Fast and don’t care if a little data gets lost 
+
+- USE CASES = suitable for real time video streaming , DNS , VPN 
