@@ -1,0 +1,71 @@
+Networking 5/7 - Subnetting - dividing up network into smaller subnets 
+
+? What is subnetting - way to divide a network into more manageable pieces 
+- Improves network efficiency - improved latency , less traffic , improves network organisation / management 
+- 
+? What is CIDR ( Classless Inter Domain Routing )
+   - ( label for the network slices - subnets) - way of writing down how big a network is using a similar format 
+- Ex. This subnet has this many bits for the network and rest for devices 
+
+
+IP Address = is a address for a device on a network that can vary per network - ipv4 and ipv6 
+Subnet mask = divides up the ip address to show which part is about the network  and which part is about your specific device/host portion 
+- FIGURES OUT WHICH PORTION OF THE IP ADDRESS IS THE NETWORK  and which part is the HOST PORTION  
+
+? Subnet calculation = splitting up a big network into a small network 
+- Figure out how many devices/hosts you want in each subnet and where those splits / boundaries go 
+
+￼
+
+Host ranges in subnets 192.168.1.0/26            /26 is the subnet mask   A /26 subnet has 64 total addresses (because 2^{6} = 64
+26=64)
+
+
+CIDR = 192.168.1.0/26 
+ - 32 bits total in an ipv4 ip address so - 26 bits for network 
+- (32-26) ‎ = 6 bits for the host/devices 
+- 2^6 ‎ = 64 = 64 total number of addresses in the subnet 
+- 64 -2 because the first is the network and last is the broadcast and the middle are usable 
+- * max 255 ip addresses in ipv4 
+
+
+CIDR = 192.168.1.0/26 
+
+? - network address : 192.168.1.0.
+? - Broadcast address : 192.168.1.0.63
+? - Usable ip addresses : 192.168.1.1 - 192.168.1.62
+
+
+? What is NAT ( Network Address Translation ) technique / method but the router 
+- Method used by Router uses to let multiple (private local address) devices on home network share one public ip address - Used across the internet 
+- Translates Private IP Addresses to one single Public address 
+- Faciliates communication between internal network and the internet 
+
+
+? How does NAT work 
+- Internal devices use public IP addresses 
+- Router translates private IP to public IP 
+- Faciliates communication with external networks 
+
+Internal devices -> router ( changes private to public ) -> external networks 
+Internal devices <- router ( changes public to private ) <- external networks 
+
+-> ( this is a request ) 
+
+? Types of NAT - 
+- Static NAT = one to one mapping of a private to public address ( webcam so can easily reach the same public IP ) 
+- Dynamic NAT = internal private address devices share a pool of public IP Addresses and are assigned one when needed for a session by the router
+
+- PAT ( port address translation ) = sharing one public IP address to a lot of private address devices on a network 
+- Router Works by using different port numbers to assign which traffic belongs to each device 
+
+
+
+? Benefits of NAT for devops 
+= conservation of public IP Addresses as there are a limited number of ipv6 / ipv4 public ip addresses 
+= enhance network security 
+= simplifies network design 
+
+
+
+
