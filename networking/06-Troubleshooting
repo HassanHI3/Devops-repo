@@ -1,0 +1,40 @@
+Networking 6/7 troubleshooting 
+
+? Why troubleshoot 
+- Ensure smooth operation 
+- Identify and fix network problems 
+- Minimise downtime 
+- Minimal distruption 
+
+? Common Network Issues 
+- Connectivity Loss - hardware , wifi etc 
+- Slow network performance 
+- IP Address conflicts - same device end up with the same IP address - confusion and connection issues 
+- DNS resolution issues 
+
+? identify symptoms 
+- Observe the problem - slow , connectivity , files not appearing etc 
+- Ex. Connectivity loss - symptoms = device can’t access network - diagnose by : check physical connection, verify network configuration ( routers / network settings etc , test with ping command [ ping google.com ]
+
+? Network Tools - debugging 
+1. Ping command - testing connectivity between 2 devices 
+ - ping [ IP address or domain ] / ping google.com        = response from domain if working 
+
+
+2. Traceroute - tracks the distance/ route your data/traffic  takes to reach a specific destination
+- traceroute [domain] / traceroute google.com        = response from domain if working 
+
+
+3. NsLookup - DNS - to find an ip address associated with a domain name  
+- nslookup domain / nslookup google.com              = response from domain if working 
+
+
+Example = i can’t reach a website , how can I troubleshoot ?  ( double check )
+- Check network connectivity - working wifi connection 
+- ping command 
+- Nslookup 
+- Check host file - no overriding entries 
+- Firewall not blocking incoming/outgoing traffic
+- Close browser 
+- Check DNS cache - clear if needed 
+- Check traceroute 
