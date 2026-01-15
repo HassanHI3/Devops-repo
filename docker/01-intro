@@ -1,0 +1,87 @@
+Docker 1/6
+
+? What is docker = an application that helps  manage , ship , scale and develop you apps in containers 
+
+- Docker engine = portable , lightweight app runtime + packaging tool - responsible for creating containers based off instructions in docker file and images 
+
+- Docker Hub = cloud service (an App Store for images) for sharing applications & automating workflows 
+
+
+Images 
+
+? What are images = templates for creating containers ( snapshot of app at a point in time ) that don’t change 
+( change only via recreating image)
+
+Docker file -> Docker image (template runs as) -> docker container 
+
+*Docker file are instructions on how to build your docker image to run as a container*
+
+
+Containers 
+
+? What are containers:
+
+-  Running instances ( different versions of the same app - dev , test , production) of images 
+-  Lightweight , portable units that package up everything (dependancies like libraries & code ) for app 
+-  Run consistently across different env’s - due to isolation  
+-  Can start , stop & modify 
+
+
+? What’s the importance of containers = they make apps portable and consistent 
+- Can run a container on your laptop , test server or cloud with no changes 
+
+
+Structure: 
+
+Docker container 1 , 2 , 3          = indépendant , standalone containers with apps inside + respective dependancies 
+^
+Docker Engine                       = manages the containers 
+^
+Host operating system               = Mac OS , Linux etc 
+^ 
+Infrastructure                      = physical server , cloud VM , Laptop 
+
+
+? Benefits of Containers: 
+
+- Each isolated with their own consistent environments -  preventing conflicts + smooth running 
+( apps works on different developers laptops because the app has all the needed dependencies in the container )
+
+- Deployment more predictable + reliable 
+- Resource efficient because they share the same kernel as the operating system 
+
+
+Virtual machines 
+
+Virtual machine:
+- Allows multiple operating systems to run on a single physical machine , being more resource heavy too 
+
+Structure: 
+
+Virtual machines                     = VM gets to run its own guest OS on the same physical machines resources + has dependancies to run
+^
+hypervisor  (virtualisation)         = lets VM’S run divides up physcial hardware an allocates chunks to vm’s so they run (cpu/memory)
+^
+Host operating system                = Mac OS , Linux etc 
+^ 
+Infrastructure (physical/virtual)    = physical server , cloud VM , Laptop 
+
+
+Containers Vs VM’s
+
+VM’s : 
+- Run full guest OS with allocated resources from physical machine 
+- Heavier + slow to start due to emulating full hardware 
+- Good for running multiple OS on the same physical system 
+
+Containers: 
+- Run docker image (snapshot) of app + share host OS kernel so less resource heavy 
+- Fewer resources used vs VM’s
+- Good for deploying apps in a consistent environment and way on different physical machines 
+
+
+Importance in modern devops 
+
+- Simplified deployment - package up dependancies and deploy anywhere 
+- Improved efficiency - resource efficiency 
+- Enhanced collaboration - docker image shared & no complex env set up
