@@ -1,1 +1,49 @@
+AWS 1/8 
+
+AWS regions = a geographical area where there is cluster of data centres (independent)
+
+- Multiple physical buildings within a region - ensure high availability + redundancy 
+- Ensuring a region is close to customers 
+- Aws services are region scoped - local laws 
+- Each aws region has it’s own unique identifier - i.e “us-east-1” , “eu-west-1”
+
+*AWS regions have a min 3 and max 3*
+- AWS region (Europe) eu west 2 
+- AWS availability zone = eu west 2a , eu west 2b , eu west 2c
+
+
+How to choose an AWS Region ?
+
+- Latency + proximity = closer region to users to user for faster performance + reduced latency  
+- Available services within a region = this is because not all regions provide the service you need 
+- Costs = costs can vary between regions 
+- Compliance with data regulation + legal requirements 
+
+
+AWS Availability zones = Multiple isolated locations within a region - I.e separate data centres in the same area 
+- Isolation key for maintaining high availability + isloated from disaster 
+- Redundant power , network and etc 
+- They’re connected with high bandwidth 
+
+
+Points of presence (edge locations)
+- Aws local outposts/sites across the world = they have 400
+- Edge locations = another name of points of presence and help deliver content closer to your user 
+
+*they cache and serve up data from a closer point so users get fast loading time + lower latency*
+*edge location -> closer to user = faster speed 
+
+
+
+AWS Console 
+
+Global services : Identity and access management (IAM)
+Route 53 (DNS service)
+Cloudfront ( content delivery network )
+WAF (web application firewall)
+
+
+- Some services are global like Route 53 so u can’t pick a region 
+- Some services aren’t supported by some regions §
+- But servers like EC2 is more regional and you can pick one that’s geographically close to you  (region services )
 
