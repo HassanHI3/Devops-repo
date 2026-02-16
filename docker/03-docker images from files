@@ -1,0 +1,56 @@
+Docker 3/6 
+
+*docker images = gives you the list of running docker images 
+
+Created new new repo called hello flask with a file within called app.py 
+
+The aim of this is that it’s a simple web application that uses the flask framework in order to create a web server that listens through port 5002 which which when interacted with is retuning hello world. 
+
+Script included things like 
+Creating the flask application instance 
+the root url 
+Checking if the application is running 
+
+Mkdir hello_world 
+Touch touch app.py 
+Python3 app.py 
+Access localhost url through the terminal 
+
+* Can see in the terminal that the web server is handling requests *
+
+*able to stop the server at anytime through CTRL+C
+
+
+Now we need to containerise our web application 
+
+Now creating a docker file within the hello_flask directory:
+
+FROM python 3.14-slim 
+WORKDIR /app
+COPY . . 
+EXPOSE 5002 
+RUN 
+CMD [“python” , ”app.py”] 
+
+= docker build -t hello_flask 
+
+Docker build ( -t hello_flask) is tagging the docker build .     ->   Full stop (.) = represents to tell docker to find the docker file in the current directory 
+
+Docker build ( -t hello_flask) is tagging the docker build ./hello_flask 
+= this is to let docker find the docker file if it’s not in your current directory
+
+* Now that the docker image is built we can run it as a container * 
+
+Docker run -d -p 5002:5002 hello-flask 
+
+-d           = runs in detach mode which means running in the background 
+-p 5002:5002 = is mapping port 5002 in machine to port 5002 to in the container 
+Hello-flask  = naming the container 
+
+* Container ID RETUNED *
+Confirm its running through docker ps 
+
+
+OVERALL:
+Took a simple python web app and containerised with docker 
+We built a docker file that is instructions for a docker image - a snapshot of the web app - then ran the image as a container on our machine 
