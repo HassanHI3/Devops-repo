@@ -1,0 +1,33 @@
+Intro to docker compose ?
+
+Docker compose allows you have multi container orchestration 
+- Multiple docker containers can be spun up the same time in a single command 
+- with the docker compose yaml file
+
+- Docker compose auto creates a network for your containers - before you need custom individual networks 
+- Containers & services can now easily communicate with each other 
+
+Docker compose down = stops all running containers 
+Docker compose build = rebuilds your containers 
+Docker compose up -d = spins up multiple containers 
+
+? Why is docker compose important in devops 
+
+- Makes testing & development easier - quickly spinning up environments and services - one command to spin up instead of manual 
+- Useful of testing as it replicates the production environment locally for testing 
+- Ensures consistancy - everyone working in the same environment due to establishing that in the yaml file 
+- Enhances teamwork - easier to version control and share between colleagues - working in the same set up 
+
+
+? What are docker registries 
+- Storage and distribution system for docker images - like an online library of images 
+- Build them -> push to registry 
+- Pull image when you need them 
+
+Public registries -> Docker hub 
+Private registries -> AWS ECR -> internal images secure an only u can control access
+
+? Why are registries important 
+- Streamline deployment - easily stored so they can be easily deployed across multiple environments ( from development to production ) 
+- Enhance collaboration - share and manage efficiency 
+- Ensure consistency - making sure exact image is being using for testing and development  
