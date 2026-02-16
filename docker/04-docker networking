@@ -1,0 +1,67 @@
+Docker networking - linking containers and commands 
+
+* Docker networking important allowing for implementation of micro services architecture *
+* Microservices allow for different part of an app run as independent services each in its own container *
+* Docker networking insures these containers can communicate efficiently and securely *
+* easily scalable *
+
+Docker provides default network options to link containers : 
+
+1. Bridge network -> Containers connected on the bridge network can communicate with their own ip addresses on a private bridge network 
+- Isolated from host machine’s network = provides extra  layer of security 
+
+2. Host network -> in host mode the container uses the host machines network directly w/out isolation ( as if container plugged direct into host network) 
+- Useful for containers that need to directly interact with the host system 
+
+3. None network -> gives container no network interface at all 
+- Means it is completely isolated 
+- Ensures a container has no network access at all 
+- Useful for certain networking scenarios 
+
+
+Last session we was able to create a simple web app using flask and containerising it with docker -> IN DOCKER LAB REPO 
+- Now we will link a my_sql db container to this web app - so that the 2 containers can be connected 
+
+
+# This is a simple web application that uses flask framework to create a web server that listens on
+# Built and containerized a hello world web application using flask framework
+# now we will link this flask application to a my_sql database container
+# port 5002 and responds with "Hello, World!" when the root URL ("/") is accessed.
+
+
+from flask import Flask          # creating a Flask application instance and importing flask library.
+import MySQLdb                   # importing the MySQLdb library to interact with a MySQL database and able to use sql commands in python code
+
+
+app = Flask(__name__)           # docker networking allows for name of containers to be used to connect to each other instead of using IP addresses.
+@app.route('/')                 # defines the route for the root URL
+def hello_world():
+   
+                                                              * Connect to the MySQL database with these credentials *
+   db = MySQLdb.connect(
+        host="mydb",                                   # Hostname of the MySQL container we'll set up in the docker-compose file
+        user="root",                                   # Username to connect to MySQL
+        passwd="my-secret-pw",                         # Password for the MySQL user
+        db="mysql"                                     # Name of the database to connect to
+    )
+    
+    cur = db.cursor()                           # simple query to get the MySQL version to confirm that the connection is working and we can execute SQL commands.
+    cur.execute("SELECT VERSION()")             # execute the SQL command to get the MySQL version on page load and display it on the webpage.
+    version = cur.fetchone()
+    return f'Hello, World! MySQL version: {version[0]}'
+
+    if  __name__ == '__main__':                        # checking if the application is being run directly (as the main program)
+         app.run(host='0.0.0.0', port=5002)             #localhost:5002 will be the URL used to access this application on a web browser.
+
+
+1. Need to create update docker file to run mysqlclient package 
+2. Connect my sql db with credentials 
+3. Create custom network with                  docker network create my-custom-network 
+4. Connect mydb with flask app with         docker run -d --name mydb  —network my-custom-network -e MYSQL_ROOT_PASSWORD=my-secret-pw my sql:8
+5. *make sure to use a mysql version that works for local device 
+
+1. To build the docker image for the flask app with the update docker file (docker file -> docker image ( template) -> docker container )
+2. Docker build -t hello-flask-mysql .         (Dot because we’re looking for the docker file ) (This rebuilds our docker image because the docker file is updated )
+3. Docker run -d —name my app —network my-custom-network  -p 5002:5002 hello-flask-mysql  (created this new container )
+
+
