@@ -1,0 +1,35 @@
+Docker set up & troubleshooting 
+
+- Docker --version = version of docker your running 
+- Docker info = info about docker that helps with debugging later 
+- Docker ps = all running containers 
+- Docker ps -a = previously run containers 
+
+
+ docker run hello-world = couldn’t find docker image locally so it pulls it from the  library (docker hub)
+- It gets the newer version of hello-world docker image and prints message
+
+1. Docker checks if hello-world image is present on your local machine 
+2. If not then it pulls the image from the docker hub 
+3. Docker creates container from the image and runs it 
+
+
+Docker file 
+
+- Series of instructions on how to build a docker image ( template )  each instruction is a layer 
+- Allow for repeatable builds - same environment every time = consistancy 
+
+Structure : 
+
+FROM                     = specifies the base layer of the docker image - python/node etc 
+^ 
+WORKDIR               = sets the working directory for subsequently builds after + where every instructions will be executed *V*
+^                            
+RUN                        = executes commands in container 
+^
+COPY                      = copies files from host machine into container 
+
+^
+CMD                       = specifies which command to run when container starts 
+
+
