@@ -1,0 +1,28 @@
+Docker 6/6 - container orchestration tools 
+
+Kubernetes (k8) -> platform designed to automate an the deployment , scaling and operation of containers 
+
+- K8 helps with container orchestration , auto scaling up/down and self healing 
+- Needed when dealing with so many containers 
+- It comes in when your managing a fleet of containers across different machines 
+
+? Docker swarm vs Kubernetes 
+
+Docker Swarm -> more simpler and docker native
+- making it easy to turn on and off cluster
+- Very lightweight as an orchestration tool 
+- No autoscaling so manually have to with other tools 
+- Limited to docker api as it’s native - like docker commands and services 
+
+Kubernetes -> more complex with additional features
+- More complicated to set up but is for large enterprise production scale environments
+- More heavyweight as an orchestration tool 
+- Has features like autoscaling and custom controls 
+- K8 not limited to docker api / capabilities being more flexible and can integrate with different containers runtimes and has more features 
+
+? Why should companies use orchestration tools 
+- Handle the complexity for you 
+- Ensure high availability 
+- Increase efficiency so can worry about the actual app not the infrastructure 
+- Enhances reliability 
+- Optimise usage and provide resource utilisation though scaling as an example 
