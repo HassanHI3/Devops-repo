@@ -23,9 +23,8 @@ Commands :
 1. Docker login - able to pull and push docker images directly from the terminal  
 
 
-
 2. docker build -t hassanhi3/Flask-mysql:v1 .   (-t to tag with the username and name of repository)         *build and tag image correctly *
-                     tag - username - repo name - dot ( tells docker to use working directory as context) 
+               tag - username - repo name - dot ( tells docker to use working directory as context) 
 
 3. docker push hassanhi3/flask-mysql:v1  - this pushes the image to docker hub so that it can be pulled later
 
@@ -43,17 +42,19 @@ aws ecr get-login-password --region us-east-1 | docker login --username AWS --pa
 
 docker build -t flask-mysql .
 docker tag flask-mysql:latest 891377356090.dkr.ecr.us-east-1.amazonaws.com/flask-mysql:latest
- docker push 891377356090.dkr.ecr.us-east-1.amazonaws.com/flask-mysql:latest
- docker pull 891377356090.dkr.ecr.us-east-1.amazonaws.com/flask-mysql:latest 
+docker push 891377356090.dkr.ecr.us-east-1.amazonaws.com/flask-mysql:latest
+docker pull 891377356090.dkr.ecr.us-east-1.amazonaws.com/flask-mysql:latest 
+
 - Pulling the image that stored in our ECR repository to our local docker environment to be run as a container
 docker run -p 5002:5002 891377356090.dkr.ecr.us-east-1.amazonaws.com/flask-mysql:latest 
+
 - Running the container that we pulled form our ecr repo and running it on our local host machine 
 
-**need to create the mysql db container first 
- docker run -d \  --name mydb  --network my-custom-network  -e MYSQL_ROOT_PASSWORD=my-secret-pw  mysql:8
+* need to create the mysql db container first *
+docker run -d --name mydb  --network my-custom-network -e MYSQL_ROOT_PASSWORD=my-secret-pw  mysql:8
 docker run -p 5002:5002 891377356090.dkr.ecr.us-east-1.amazonaws.com/flask-mysql:latest      
 
-*error says that mysql db and flask app are on 2 different ports / network so they can’t communicate *      
+* error says that mysql db and flask app are on 2 different ports / network so they can’t communicate *      
 docker network create my-app-network 
 docker run -d \
   --name mydb \
@@ -65,9 +66,8 @@ docker run -d \
 Docker compose up -d 
 
 
-
-Overalll - flask app is running and connected to my sql db 
-- Usedc docker compose to manage multi container applications using and image we pulled for amazon elastic registers (ECR)
+Overall - flask app is running and connected to my sql db 
+- Used docker compose to manage multi container applications using and image we pulled for amazon elastic registers (ECR)
 
 
 Commands : 
