@@ -80,8 +80,51 @@ Docker stop ( container ID)
 Docker rm ( container ID )
 
 
-? How to optimise and make image lighter - small = faster to pull , push and  deploy 
-- To do this we use multi stage builds 
+? How to proceed with docker file optimisation  = faster to pull , push and  deploy 
+- though the use of multi stage builds 
+- making image lighter 
 
-Multiple from statements 
+
+Multi stage builds allow us to use multiple FROM statements in docker file : 
+
+- Using one stage to build your application  and a much lighter stage to create the final image you deploy
+
+- This process allows for removing off unnecessary dependancies = creating a smaller optimised image - quicker to pull from a registry / deploy 
+
+Check size of image with = docker images my-flask-app:original 
+
+#stage1 to build the app
+
+FROM python 3.14 as build 
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    pkg-config \
+    default-libmysqlclient-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY . . 
+
+RUN pip install --no-cache-dir flask mysqlclient
+
+
+#stage2 : production stage 
+
+FROM python:3.14
+WORKDIR /app 
+
+COPY —from=Build  /app /app 
+
+EXPOSE 5002
+
+CMD [“python” , “”app.py”]
+
+Docker built -t my-flask-app:multistage .
+
+Docker images my-flask-app:multistage = shows the image has reduced in size 
+
+*change the image name in docker compose file to my-flask-app:multistage * 
+
+Docker compose up -d 
 
