@@ -120,11 +120,11 @@ EXPOSE 5002
 
 CMD [“python” , “”app.py”]
 
-Docker built -t my-flask-app:multistage .
+* Docker build -t my-flask-app:multistage . *
 
 Docker images my-flask-app:multistage = shows the image has reduced in size 
 
-*change the image name in docker compose file to my-flask-app:multistage * 
+* change the image name in docker compose file to my-flask-app:multistage * 
 
 Docker compose up -d 
 
