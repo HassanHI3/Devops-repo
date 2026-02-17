@@ -1,0 +1,87 @@
+? What are docker registries 
+- Storage and distribution system for docker images - like an online library of images 
+- Build them -> push to registry 
+- Pull image when you need them 
+
+Public registries -> Docker hub 
+Private registries -> AWS ECR -> internal images secure an only u can control access
+
+? Why are registries important 
+- Streamline deployment - easily stored so they can be easily deployed across multiple environments ( from development to production ) 
+- Enhance collaboration - share and manage efficiency 
+- Ensure consistency - making sure exact image is being using for testing and development
+- Reduces inconsistency and errors   
+
+Once you have built the docker image from the instructions of the docker file and now you have a working container that it running and tested 
+- You can push that image (template) to a registry like AWS ECR
+
+*when you ready you pull that image from the registry and deploy it to a staging / production environment*
+- This is were CI/CD pipelines come in as they are pulled into here for continuous integration and deployment 
+
+Commands : 
+
+1. Docker login - able to pull and push docker images directly from the terminal  
+
+
+
+2. docker build -t hassanhi3/Flask-mysql:v1 .   (-t to tag with the username and name of repository)         *build and tag image correctly *
+                     tag - username - repo name - dot ( tells docker to use working directory as context) 
+
+3. docker push hassanhi3/flask-mysql:v1  - this pushes the image to docker hub so that it can be pulled later
+
+- On docker hub we can see the tag v1 
+- Can be pulled onto another device 
+- And can be managed with public or private view 
+
+ 4. docker pull hassanhi3/flask-mysql:v1 
+- This command can be shared to be used to pull the image onto another device from the docker hub repo 
+
+
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 891377356090.dkr.ecr.us-east-1.amazonaws.com
+- This is logging into my private ecr repo 
+
+docker build -t flask-mysql .
+docker tag flask-mysql:latest 891377356090.dkr.ecr.us-east-1.amazonaws.com/flask-mysql:latest
+ docker push 891377356090.dkr.ecr.us-east-1.amazonaws.com/flask-mysql:latest
+ docker pull 891377356090.dkr.ecr.us-east-1.amazonaws.com/flask-mysql:latest 
+- Pulling the image that stored in our ECR repository to our local docker environment to be run as a container
+docker run -p 5002:5002 891377356090.dkr.ecr.us-east-1.amazonaws.com/flask-mysql:latest 
+- Running the container that we pulled form our ecr repo and running it on our local host machine 
+
+**need to create the mysql db container first 
+ docker run -d \  --name mydb  --network my-custom-network  -e MYSQL_ROOT_PASSWORD=my-secret-pw  mysql:8
+docker run -p 5002:5002 891377356090.dkr.ecr.us-east-1.amazonaws.com/flask-mysql:latest      
+
+*error says that mysql db and flask app are on 2 different ports / network so they can’t communicate *      
+docker network create my-app-network 
+docker run -d \
+  --name mydb \
+  --network my-custom-network \
+  -e MYSQL_ROOT_PASSWORD=my-secret-pw \
+  mysql:8
+
+*create my app netwokr in this database sql *
+Docker compose up -d 
+
+
+
+Overalll - flask app is running and connected to my sql db 
+- Usedc docker compose to manage multi container applications using and image we pulled for amazon elastic registers (ECR)
+
+
+Commands : 
+Docker images -> to list the images are available 
+Docker inspect (image ID) -> details about the image specifically 
+Docker rmi (image ID )-> remove images we don’t use 
+Docker system prune -> all unused docker resources 
+Docker ps 
+Docker stop ( container ID) 
+Docker rm ( container ID )
+
+
+? How to optimise and make image lighter - small = faster to pull , push and  deploy 
+- To do this we use multi stage builds 
+
+Multiple from statements 
+
