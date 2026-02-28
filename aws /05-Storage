@@ -1,0 +1,53 @@
+AWS storage 
+
+What is an EBS volume? 
+= it’s a type of block storage that you attach to an EC2 instance mainly ( Other container services/ repurpose snapshots )
+
+                                                                                         
+- Virtual (storage) hard drive like where you store data persistently                                            
+- Even if the EC2 instance stops  , the EBS Volume stays intact 
+- You can reattach it / or take a snapshot for backup 
+- Good for storage of databases , logs , files etc 
+
+
+* EBS restricted to a specific availability zone *
+-> If you need in another zone ? -> create a snapshot and restore in that new zone 
+
+
+
+What is an AMI ( amazon machine image ) ? 
+= a template for launching an EC2 instance that includes and you can customise :
+- An operating system 
+- Software & configurations
+
+You can launch EC2 instances from: 
+- A public AMI : AWS provided 
+- Your own AMI : make and maintain them yourself - great for replicating set ups 
+- An AWS marketplace AMI : an AMI someone else made / sells 
+
+pros of AMI ? 
+→ allowing you to automate setup of EC2 instances
+→ faster boot times as it’s pre-packaged
+→ You can launch multiple ec2 instances as you have got the right configurations + snapshots 
+→ saves time = when scaling infra , re-creating environments , launching instances in different regions 
+
+* AMI are built for a specific region (can be copied across regions) * 
+
+*when you spin up an EC2 you pick an AMI  to define what software stack it starts with*
+*can use pre-built or build your own AMI *
+
+
+What Is amazon EFS ( elastic file system ) ? 
+
+Pros of EFS ? 
+
+→ Managed network file system 
+→ Can mount Multiple EC2 instances on it and can access it at the same time = highly available , reliable 
+→ Works across EC2 instances in multi Availability zones 
+→ Scales automatically with your data 
+→ Can easily share data between themselves as they’re connected 
+
+
+Cons of EFS ? 
+- Expensive - 3x of SSD - really use it when app needs shared storage across multiple instances 
+- Pay per use 
