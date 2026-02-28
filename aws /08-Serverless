@@ -1,0 +1,85 @@
+AWS Serverless - just deploy your code and deploy it via functions ( FAAS)
+
+= is a model where you build and manage applications without managing servers ( infrastructure
+
+
+Why AWS Lambda? (Vs ec2) 
+
+EC2 - Virtual servers in cloud 
+- Limited by RAM & CPU 
+- Coninously running so can get expensive 
+- Manual scaling so you have to intervene and +/- servers 
+
+Lambda - virtual functions - no servers to manage                   **best for event driven code  
+- Limited by Time (50 mins )- short executions / tasks 
+- Run on demand - saving money 
+- Scaling is automatic
+
+Pros
+- Easy pricing , cost effective , flexible 
+- Easy monitoring through aws cloud watch 
+- Easy to get more resources per function  (10gb RAM )
+- Increasing RAM will also improve CPU and network 
+
+
+Serverless overview 
+
+- You write the code and AWS handles scaling , maintenance and infrastructure 
+- AWS lambda - runs your code where something happens / event triggered 
+- API gateway - manages your API for web requests 
+- Dynamo DB - stores your data with no servers to manage 
+
+* You only pay for what you use *
+* The servers exist you just don’t manage them *
+* You write your code in a function and AWS lambda deploys for you *
+
+
+Example 1: architecture 
+
+(Static content)-> S3
+v
+Users ->(via REST API) -> Api Gateway -> Lambda -> Dynamo DB
+^
+(Log in)-> AWS Cognito 
+ 
+1. Users log in using AWS Cognito for authentication.
+2. Static content is stored and accessed from an S3 bucket.
+3. Users interact with a REST API via API Gateway.
+4. API Gateway triggers a Lambda function when requests come in.
+5. The Lambda function processes logic and interacts with a DynamoDB table.
+6. DynamoDB handles the data (e.g., storing or retrieving).
+
+
+
+Example 2: serverless thumbnail creation 
+
+1. New image uploaded to s3 
+2. Aws lambda function creates thumbnail and pushes that data to an s3 bucket and dynamoDB
+3. S3 recieves new updated thumbnail + image                                                                            
+4. DynamoDB holds the new metadata (file name , time , file size etc ) and new updated thumbnail + image 
+
+Example 3 : (trigger every 1 hr)
+Eventsbridge -> triggering events on a schedule -> aws functions performs a task 
+       
+
+AWS Lambda = You write your code in a function and AWS lambda deploys for you
+
+S3 bucket = ( completely service ) = used for storing files and static content + scales depending on how much data stored 
+
+AWS Cognito = helps manage user authentication -> making it easy to manage sign in / logins in your app
+
+DynamoDB = ( no sql ) fully managed server less + no sql database -> scales automatically ( no provision / manage db servers )
+
+Aurora Serverless = (sql based) managed DB that scales up and down capacity and pay for what you use (capacity wise)(relational)
+
+Fargate = run containers w/out managing the servers - normally you manage the ec2 instances (vm’s) they run on but fargate handles the infra
+
+Step Functions = help coordinate workflow like lambda functions & ECS tasks , they make sure task run in order 
+
+API Gateway (can trigger lambda functions )= central point for API requests where the api request is received the api gateway then assigns it to the right backend service and returns response to user.
+* Api gateway receives request -> lambda function runs and returns result to use *
+
+[AWS SNS] (simple notification service) = designed to send message to multiple recipients at once -> (push notifications)
+[AWS SQS] (queue service ) = delivers message in queue between services  -> one by one and until it is picked up (reliable)
+[event driven architecture ]
+ 
