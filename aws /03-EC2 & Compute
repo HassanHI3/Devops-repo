@@ -1,1 +1,89 @@
+AWS EC2 
+
+Amazon compute - the power behind running your app = AWS has multiple options 
+
+Amazon compute: 
+
+- EC2 - similar to classic VM’s where you have full control of the OS and how it’s configured = flexible 
+- Containers - ECS =  one is a container runner - lightweight version of app that has dependancies packaged sharing host kernel and OS 
+- Containers - EKS = container orchestrator with Kubernetes 
+- Serverless - Lambda = service that runs your code when triggered by the functions in your code ( AWS handles the server side ) ( can scale up & down based on use )
+- High availability and scalability 
+
+
+EC2 = Elastic compute cloud = infrastructure as a service ( IAAS ) 
+
+- Virtual machines/ servers that you rent from AWS on a by usage basis - ( everything a physical server can do )
+- These virtual servers can be SPUN UP to run your app , host websites , process data ect
+- Are flexible and can be configured 
+- They can be scaled HORIZONTALLY by adding more instances 
+
+* EC2 an be integrated with Load balancers , auto scaling and most AWS services 
+
+EC2 can allow you to : 
+- ELASTIC BLOCK STORAGE (EBS) -      storing data on persistent block storage for your EC2 instance 
+- ELASTIC LOAD BALANCER (ELB) -   Distributes incoming traffic across multiple EC2 instances 
+- AUTO SCALING GROUP (ASG) -    Auto adjusts the number of EC2 instances based on demand = app resilient & cost effective 
+
+Configured with : 
+
+Operating system - ( OS ) 
+How much compute power cores - ( CPU)
+How much random access memory - ( RAM ) 
+
+How much storage - Network attached = EBS ( like a hard drive attached ) , EFS (share access and data between instances) (mounted)
+Network card - speed of card & access to public ip address 
+Firewall rules - security group = more resilient and robust against attacks 
+Bootstrap script - script written that runs when configured for first EC2 instance launch / spin up 
+
+
+EC2 user data 
+
+Possible to bootstrap out instances with a EC2 user data script on first launch 
+*bootstrap = launching commands when machine first starts *
+Script is only run once at first start / launch 
+
+EC2 user data script can automate :      * source code + dependancies + instructions etc = package *
+- Installing updates 
+- Installing 
+- Downloading common files off the internet 
+
+Ec2 user data script runs with the root user so has access to everything 
++ good for setting up multiple instances + reproducibility  
+
+
+EC2 instance types 
+
+They come in “instance families” that are represented by a letter = m (instance type)  5 . 2xlarge (size within instance class )
+
+T & M = general purpose 
+C = focus on compute ( cpu heavy tasks ) 
+R = focus on memory  (memory intensive workloads )
+I = storage 
+G & P = ( GPU acceleration / machine learning ) 
+X & U = highly specialised high memory needs 
+
+
+EC2 purchasing options   - use instance type finder
+
+On demand resource →  short workload and predictable pricing 
+
+Reserved instances 1 & 3 years → long workloads
+ 
+Convertible reserved instances →long workloads with flexible instances 
+
+Savings Plans (1–3 years)
+→ Commitment to usage → Flexible instances → long workloads 
+
+Spot instances → short workloads , cheap but can lose instances = LESS RELIABLE - AWS can terminate anytime
+
+Dedicated Hosts → book an entire physical server 
+
+Dedicated Instances
+→ Hardware not shared with other customers → Still managed by AWS
+
+Capacity reservations → reserve capacity in a specific AZ ( availability zone ) = Guarantees availability + pay regardless of use 
+
+Dedicated Hosts
+→ Entire physical server → Full control (licensing / compliance use cases)
 
