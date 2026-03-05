@@ -1,0 +1,59 @@
+AWS Cloudfront - speeding up app and secure at global scale 
+
+Content delivery network ( CDN ) - distributes your content ( web pages , api’s , videos , data) to users around the world world that have low latency 
+
+* Instead of users reaching back to the origin server like an s3 bucket/ ec2 instance = edge locations are used *
+
+1. Caches content at edge locations globally 
+2. When someone requests that content , they are served by the nearest location 
+3. this reduces load on your origin servers and improves speed for end users 
+
+Pros : 
+- Fewer resources used by origin server  & Fast loader times 
+- Improved user experience & Improves read performance 
+- Integrates well with AWS shield and AWS web application firewall ( WAF) = DDoS protection - look over again 
+
+
+AWS has 261 points of presence ( pips ) ( edge locations ) = so content can be accessed almost anywhere 
+
+
+Cloudfront at a high level  ( content delivery )
+  → client requests to view image from website -> request sent to cloudfront edge location (server) (if cached , pops up immediately) 
+  → if not cloudfront reaches out to the origin ( s3 / http server ) →  content sent back to edge location + cached   →  client receives content
+
+
+When using private AWS with Origin access control and bucket policies , cloudfront  is the only way to access your origin s3 files directly
+
+
+ A Cloudfront origin = where cloudfront fetches content from 
+
+*Cloudfront then pulls from that origin/source and caches at edge locations for faster delivery to users*
+
+
+2 main categories include -> S3 buckets , AWS hosted infrastructure like EC2 , load balancers OR
+->  HTTP server 
+
+
+S3 bucket - for distributing static content and files and caching at edge 
+
+  → Cloudfront integrates tightly with s3  , allowing direct origin access control configuration and caching 
+  → OAC (origin access control) used to securely access s3 buckets replacing OAI (identity) 
+  → Enhanced security is achieved with IAM policies with OAC = ensures only cloud front can access s3 bucket 
+
+
+ → Cloudfront can handle direct uploads & pass them to s3 bucket
+- Users upload directly through cloudfront
+- Cloudfront securely forwards POST requests to s3 bucket 
+- Enhances security by adding cloudfront protections 
+- Performance benefits as it’s using cloudfront global edge locations 
+
+  *Cloud front can also serve as an ingress to securely upload files to s3 by forwarding POST requests*
+  *Ingress = traffic/data entering your system
+
+
+HTTP server 
+
+ → HTTP origins can be any web server—on AWS (like EC2) or external.
+ → CloudFront forwards requests (GET, POST, etc.) to the origin.
+ → Origin generates dynamic responses (e.g., API, HTML).
+ → You can configure caching, headers, and query strings to control content delivery.
