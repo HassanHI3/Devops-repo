@@ -1,0 +1,340 @@
+AWS scalability , high availability  & load balancing 
+
+Scalability - the ability of a system to grow and shrink based on capacity as workload increase /decreases
+
+2 types of scalability : 
+- Vertical scalability - boost the power of a single machine -> more cpu , memory, etc
+- Horizontal scalability - add more machines spreading the load across different servers → * elasticity provision up / down when needed *
+
+Scalability linked to High availability 
+
+Vertical Scaling - associated with non distributed systems 
+
+→ increasing the size of a single instance
+→ I.e app runs on t2.micro - scale up - t2.large 
+→ you just scaled vertically 
+→ very common for non distributed systems like a database , ads , elastiCache
+→ limit on how much vertical scaling is mostly due to a hardware limit 
+
+
+Horizontal Scaling - associated with distributed systems - MORE INSTANCES = Resilience +high availability 
+→ increasing the number of instances/ systems that your application is running on 
+→ If you need to handle - more load you add more instances 
+→implies distributed system 
+→ common for web app / modern apps 
+→ easy to horizontally scale due to cloud offerings like amazon EC2 
+
+Can automate this with auto scaling groups 
+No single point of failure as there are multiple instances available 
+
+
+What is High Availability ?
+
+→ ensures minimal downtime and continuous operation 
+→ you run your application on at least 2 avalablity zones ( data centres)  in order to provide resilience 
+→ if one availability zone fails , the other keep the service / app running 
+→ Reduces single point of failure + resilience 
+
+High availability can be passive 
+- Passive high availability means the backup aren’t operational during normal operation hours 
+- ( multi relational database ) RDS multi AZ  a standby database is kept in another availability  zone 
+- Doesn’t handle traffic and is on standby 
+- If primary fails then this one takes over 
+
+
+What does High availability of EC2 look like ?
+
+Virtual scaling = increase instance size up and down - RAM , CPU , etc 
+
+Horizontal scaling = increasing the number of instances - out and in 
+- Auto scaling group - lets you add / remove instances 
+- Load balancer - sits infront of EC2 - directs traffic and distributes to the right instance  
+
+
+High availability ( multi AZ’s ) = run instances of the same app across multiple availability zones 
+- Auto scaling group multi AZ - adds / removes instances within the multi AZ’s 
+- Load balancer multi AZ - directs and manages traffic across the multi AZ instances 
+
+
+What is a load balancer ?
+ 
+→ Type of service that distributes incoming requests and traffic downstream to the healthy EC2 instances 
+- Load balancer upstream and EC2 instances downstream 
+- AWS has service called Elastic load balancer that is their own managed service 
+ 
+Application Load balancer ( load balancer ) can act as a reverse proxy as it handles incoming requests and forwards them to EC2 instances 
+
+ Remember "reverse proxys" = sits infront of servers to filter + route client requests to backend servers ( instances )
+
+
+Why use a load balancer ?
+
+- Spreads load downstream across multiple instances like EC2’s
+- Provides a single DNS endpoint for your app
+- Handles failure of instances 
+- Conducts health checks on your instances ( I.e EC2 )
+- Terminates SSL - handed the decryption of encrypted traffic - instead of backend services doing it 
+- Manages HTTP / HTTPS for your sites 
+- Enforces session stickiness using cookies - user keeps getting sent to the same instance in their session ( Continuity )
+- High availablity across zones 
+- Seperates public traffic from private traffic 
+
+
+Why use an Elastic load balancer ?
+
+Elastic load balancer is a managed load balancer where AWS guarantees it will be working , take care of maintenance + provide config knobs 
+- Personal load balancer costs less but more work 
+- Integrated with other AWS services 
+- Load balancer can be set up as internal (private) or (external) ELB
+
+
+ELB is the umbrella AWS service and under it comes : 
+
+ → Application lower balancer - ALB  → HTTP , HTTPS , Websocket  
+
+ → Network lower balancer- NLB  → TCP , (secure) TCP , TLS , UDP
+
+ → Classic load balancer  CLB  →HTTP HTTP, TCP , (secure)TCP , SSL 
+
+ →Gateway load balancer - GWLB  → operates at layer 3 (network) ip protocol 
+
+
+
+Health checks 
+
+Health checks are crucial for load balancers + consistently check health of instance (stop sending traffic) = good user experience 
+→ they let the elastic load balancer of choice know if the instance they are routing traffic to is healthy and available to reply to requests 
+→ Health check is done on port and a route ( /health is common )
+
+= if the response is not 200 (OK) , then instance is unhealthy 
+
+i.e Elastic load balancer  → send a request soon HTTP through port 4567  → EC2 instance 
+= if return 200 (OK) then healthy 
+
+
+What are Load Balancer Security groups ?
+
+User  → HTTP/S from anywhere  → Load balancer  → HTTP restricted to Load balancer  → EC2 
+
+Security groups allow your load balancer to accept 
+→ TCP traffic on port 80 ( for  HTTP ) 
+→ TCP traffic on port 443 ( for HTTPS ) traffic
+= your allowing the load balancer to receive both unencrypted and encrypted web traffic 
+
+= once ELB receives traffic it routes it to the backend instances according to the application security group ( allow traffic only from Load Balancer )
+
+application security group -> allows for TCP traffic on port 80 for HTTP from a specific source so only the load balancer can route traffic to it 
+
+
+Application load balancers in depth ?
+
+- Layer 7 HTTP
+- Load balancing to multiple HTTP applications across machines / servers ( target groups )            = collection of resources like EC2’s
+- Load balancing to multiple applications on the same machine ( containers 
+- ALB can route based on hostname in URL 
+- Can route requests / traffic to different target groups based on URL paths 
+- Can route on query stringer / headers 
+- Can route to MULTIPLE TARGET GROUPS 
+
+- ALB’s are ideal for micro services and container based apps like - ECS , docker
+- ALB have port mapping which is great for ECS ( containers ) avoiding the need for multiple clastic load balancers 
+
+
+Traffic → ALB -> ECS cluster → ECS service ( define what tasks are run) -> EC2 instance → (grouped by target groups) Tasks / containers 
+                                                                                                   ECS agent 
+
+
+
+Application load balancer then uses the target groups to figure out which where to route the right traffic to the right Tasks / containers  
+- ALB has health check as part of it constantly checking health of tasks / containers 
+
+
+Target Groups ?
+
+Target groups are resources/ tasks that are grouped together that are the end destination of the traffic from the ALB 
+Typically each target group is associated with a certain service application = scaling diffrent parts of app independently = good for micro services + docker 
+
+Target groups can be things like - containers , Lambda functions ( HTTP requests translated into JSON events ) etc 
+ ALB can route to multiple target groups 
+
+
+IP addresses with application load balancers ?
+1. When ALB created AWS gives it a fixed DNS name like “xxx.region.elb.amazonaws.com”
+2. Users the send a request  to the ALB DNS name /  “hostname” ( shortened version of DNS name )
+3. ALB receives request
+4. ALB then forwards the request to one of your EC2 instances based on TARGET GROUPS AND RULES 
+
+Client IP → Connection terminated → ALB forwards to EC2 instance 
+                          At ALB
+
+- EC2 instance sees Private IP &  doesn’t see real client IP  rom load balancer 
+
+- But ALB passes the real client info inside headers =
+
+X-Forwarded-For → contains the real client IP
+X-Forwarded-Port → shows the original port used
+X-Forwarded-Proto → shows whether the request was HTTP or HTTPS
+ 
+
+BONUS : REVERSE PROXY = server that lists between client devices and backend services like Load balancing  , SSL , caching 
+
+* SSL termination so that ALB handles encryption to decrypt HTTPS traffic before it hits EC2 *
+
+
+Network load balancer 
+
+ → operates at layer 4 of OSI model ( transport layer ) - 
+- Forwards TCP and UDP traffic to you instances - routes that raw traffic without getting involved in layer 7
+- Build for millions for requests 
+- Less latency that ALB 
+- Used for extreme performance of TCP or UDP traffic 
+
+* → NLB uses one static IP in each availability zone you enable 
+ → If you want the NLB IP to stay fixed you can assign as elastic IP address
+= means your load balancers external IP Is stable and reusable - useful for whitelisting ( trusted entities ) 
+
+
+Use case : high traffic , low latency = gaming , real time trading , load balancing no HTTP traffic like Database
+
+
+Network load balancer handling TCP traffic at Layer 4 ?
+
+1  → Client connects to NLB IP address through IP/DNS name 
+2  →  client initiates TCP connect with NLB IP  
+3  → NLB applies rules and route TCP traffic to backend instance 
+4  → Instance process the connect and request + sends back response to NLB  
+5 →  NLB sends response to client 
+
+TCP connection but it can be a HTTP request  →  NBL doesn’t dig just reads IP 
+
+
+Sticky sessions - session affinity 
+
+= Once client connect to backend service (I.e instance) , the client keeps getting sent to that server for the duration of the session 
+
+- This partically helpful when dealing with shopping carts / logged into app 
+- Load balancer uses a cookie or client IP based rule to do this 
+- ALB and CLB are the best for this 
+
+→ However enabling stickiness might imbalance the load over the EC2 instances 
+
+
+SSL/TSL certificates → Allows traffic between your client and Load balancer to be encrypted in traffic ( in flight encryption ) 
+
+- SSL = secure socket layer used to encrypt connections 
+- TSL = Trasport layer security is the newer version 
+= mainly TSL certificates are used but SSL referred to 
+
+SSL/TSL encrypt and then SSL termination happens at the load balancer → it decrypts and sends the plain data to instance 
+
+* SSL/TSL certificates provided by certificate authorities like GoDaddy + can expire and need renewing 
+
+
+Load balancer for SSL/TSL ?
+
+Load balancer provides TSL/SSL certificate at the “handshake” to the client to verify the load balancers identity + sets up secure encrypted connection + trust
+- Load balancer uses X.509 certificates ( SSL/TSL certificate )
+- Can manage certificates with AWS CERTIFICATE MANAGER
+- Can also upload your own certificates 
+
+→ on the HTTP listener (door) of the Load balancer 
+- You must specify a default certificate 
+- You can add optional list of certificates to support multiple domains 
+- Able to specify a security policy to support older versions of SSL / TSL 
+
+** Clients can use SNI ( server name indication ) to specify the hostname they reach 
+- This is needed if your hosting multiple websites/domains on the same backend server 
+* SNI allows the load balancer to present the right certificate depending on the domain the client is requesting.
+
+→ requires the client to indicate the hostname of the target server in the initial SSL handshake **
+
+
+ELASTIC LOAD BALANCERS - SSL certificates ?
+
+Application lower balancer → supports a multiple listeners (HTTP etc) , with multiple SSL certificates 
+- Uses Server name indication (SNI) to make it work 
+
+Network load balancer →  support multiple listeners (HTTP etc) , with multiple SSL certificates 
+- Uses server name indication to do this (SNI)
+
+Classic Load balancer →  supports only one SSL certificate 
+→  must use multiple CLB’s if you have multiple hostnames/domains on the target server with multiple SSL certificates 
+
+
+
+Connection draining && deregistration Delay ?         ** can scale down or set to 0 to cut off connection instantly
+  
+This is when a backend isntance is deemed to be unhealthy or is stop due to scalling down               
+→ it lets existing traffic / in flight requests finish before eventually instance is gracefully stopped          
+→  from that point new connects / traffic is only routed to the healthy existing backend instances 
+
+= no abrupt stop/experience for users  
+
+
+Dereregistration delay = APPLICATION LOAD BALANCER + NETWORK LOAD BALANCER 
+Connection delay = CLASSIC LOAD BALANCER 
+
+
+What is an Auto scaling group  ( ASG ) ? 
+
+Service on AWS where the goal is to: 
+- Scale out ( add EC2 instances ) to match increase work load 
+- Scale in ( remove EC2 instances ) to match decrease work load 
+- Ensure we have a minimum and maximum available EC2 instances running for our app
+- Automatically register new EC2 instances to a load balancer 
+- Recreate an EC2 instance in case the previous one is terminate ( due to being unhealthy )
+
+→   Auto scaling groups are free you just pay for the underlying EC2 instances
+
+
+Auto scaling group overall in AWS ? 
+
+Minimum capacity - smallest number of instances running even during low demand 
+
+Desired capacity - the target number of instances you aim to have during normal conditions 
+
+Maximum capacity - the largest number of instances allowed , preventing over scaling 
+
+Scale out - add more instances when demand increases
+Scale in   -  remove more instances when demand decreases 
+
+
+Auto scaling group in AWS with a load balancer ?
+
+User -> load balancer -> instances 
+
+→   Auto scaling group just helps when an instance is not healthy or scaling is needed 
+→   as ASG scales out / in the load balancer updates it’s target pool of instances / task ( container ) 
+
+
+Auto scaling group attributes ?
+
+When scaling those instances it’s important that they are configured correctly so we have a “Launch Template”
+
+Launch template consists of : 
+→  Amazon machine image (template / pre-configured snapshot of the EC2 config) + instance type (t2.micro/large etc )(memory /network optimsed ect) = same setup
+→  EC2 user data (scripts )
+→  Elastic block storage (EBS) - persistent storage for instances 
+→  Security groups - virtual firewalls to control in/outbound traffic to EC2 instances 
+
+→  SSH keys - securely connect to instances 
+→ IAM roles for EC2 instances - in order to interact with other AWS services - so u dont store access keys in your code 
+→  Network + subnets information - need to indictate which subnets and VPC these EC2’s will be created 
+→  Load balancer information  - min /Max / initial capacity of instances 
+→  scaling policies ( rules of scaling ) with traffic 
+
+
+Auto scaling - cloud watch alarms & scaling ?
+
+→   It is possible to have Auto Scaling Groups based on CloudWatch alarms 
+- Alarm monitors ( CPU , other metrics etc ) 
+- Based on the alarm Scale In / Out policies can be created (number of instances )
+
+
+Auto scaling - scaling policies ?
+
+→  Simple / step scaling - adds / removes instances based on metrics / threshold 
+
+→  Target tracking - scales up/ down based on a target and aims to keep it there 
+
+→  Predictive scaling - anticipate scaling needs based on demand usage pattern 
