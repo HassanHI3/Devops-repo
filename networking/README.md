@@ -15,7 +15,7 @@ The focus is on understanding how systems communicate over a network.
 - Understand how data moves across networks
 - Build confidence with networking concepts used in cloud environments
 
-- ## Labs
+- ## Labs - found in domain-ec2-dns folder
 
 - **Domain + EC2 + DNS (NGINX)**
   - Deployed an EC2 instance running NGINX
