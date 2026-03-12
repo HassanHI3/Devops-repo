@@ -10,9 +10,9 @@ Create a custom VPC with one public and one private subnet, set up internet acce
 ### Tasks
 1. VPC
 
-- Custom VPC: 10.0.0.0/16  [x] 
-- One public subnet  [x] 
-- One private subnet  [x] 
+- Custom VPC: 10.0.0.0/16  [] 
+- One public subnet  [] 
+- One private subnet  [] 
 
 2. Internet Access
 
@@ -44,4 +44,5 @@ CloudWatch monitoring enabled
 Outcome
 
 This setup allows the public EC2 to be reachable from the internet while keeping the private EC2 isolated. The private subnet can still access the internet outbound through the NAT Gateway.
+
 
