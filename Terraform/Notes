@@ -1,0 +1,282 @@
+Terraform - IAC
+
+What is infrastructure as code ?      * constantly think about security and idompotency *
+
+→ You manage and provision infrastructure using code or config 
+→ You write script / configuration files that define your server , networks and resources 
+→ Tools like terraform or Cloud Formation use that code to build or update your infrastructure 
+→ Cloud agnostic and can be used with any cloud provider / Kubernetes service 
+
++ Infra as code - makes infra more repeatable , consistent and version controlled 
+
++ Cloud agnostic because terraform can download plugins so that it can deploy to  different providers 
+- Providers = plugins 
+- Terraform registry downloads the plugs 
+
++  User →   writes script / template / policy ( terraform , cloud formation etc) →  deploy →  AWS / Azure , Google 
+
++ the script / template / policy written can be Version controlled ( with GIT )
+
+- Track changes , roll back to other versions , collaborate with team members 
+
+
+
+What is Infrastructure Orchestration VS Config management ?
+
+→ Infrastructure Orchestration - bring up infrastructure components like spinning up + connecting them ( orchestrating bigger picture ) 
+- AWS CloudFormation 
+- Terraform 
+
+→ Configuration Management - infrastructure already exists and you need to keep that resource in the right state 
+- Ansible 
+- Chef 
+- Puppet
+
+Both work together as they orchestrate the environment & manage it’s configuration 
+
+
+
+What is the Terraform workflow ?
+
+1. You write Terraform configuration file    (/ INFRA definition )( in HCL ) - defining what resources and provide you want 
+2. Terraform INIT → ensures necessary plugins are ready like AWS cloud 
+3. Terraform PLAN → preview of your configuration file 
+4. Terraform APPLY → applies preview change
+5.  AWS cloud → creates , updates and versioning 
+
+
+→ Terraform state file is created 
+→ If you need to change - change config file 
+→ Run terraform plan & terraform apply 
+→ No longer need infra you run Terraform destroy
+
+
+
+Terraform Tips ?
+
+1. Testing and validation : Always verify configurations before deployment to avoid surprises 
+
+2. Start with a minimum viable product (MVP) : Just enough infrastructure to function then expand from there 
+- Iterate = make small improvements, testing along the way → no big suprises 
+
+3. Implement DRY Software engineering principles: Reuse modules , variables and templates to keep IAC clean and maintainable 
+
+4. Aws configure list-profiles - lists available profiles to be used
+5.   cat ~/.aws/config  - specify in provider block region and profile wanted 
+
+
+
+
+What is a Terraform state file ?
+
+1 . State file is a up-to-date record of your current state of the infrastructure 
+- Tracks the resources you created + their configurations 
+- Mapping your code to your infrastructure 
+
+This state file is essential so Terraform knows what exists so it can determine what to : Create , Update and destroy 
+- Without this file Terraform can’t manage existing resources correctly 
+
+
+2 . Terraform is designed to be IDEMPOTENT = so applying the configuration repeatedly doesn’t change anything unless your current state and  desired state is different 
+
+- Specific change in config = particular change , not a whole update 
+
+
+
+What is the current state VS  Desired state in Terraform ?
+
+Current state = State file -> the record of the current state of your infrastructure ( .tfstate )
+
+Desired state = the changes you want to have like adding 2 EC2 instances ( .tf )
+
+Desired state is written in your Terraform configuration 
+
+So Terraform compares the 2 and changes state file accordingly ( .tf VS .tfstate )
+
+
+
+Deploying infrastructure with terraform questions to think about *
+
+How is infrastructure deployed via terraform ?
+
+How are the connections to cloud established in order for your deployments to reach the cloud ?
+
+How do I deploy things safely and not break anything ?
+
+
+
+What are Terraform providers and how to establish connection ?
+
+Terraform provider = a plugin that allows you to interact with cloud platforms , services so Terraform can manage resources in the cloud 
+
+This is part of the configuration file for our desired state .tf 
+
+Terraform {
+required_providers                    [ where to get the provider plugin section ]
+aws = {                                        the provider your configuration needs  
+source = "hashicorp/aws"         where Terraform downloads provider ( i.e hashicorp registry )
+version = "5.62.0"                      locks version for consistency 
+        }
+    } }
+
+Provider "aws" {                         Tells Terraform which services to interact with and the resources down below [ section ]
+#Configuration options
+}
+
+WORFLOW 
+
+What does Terraform INIT do ?
+
+INIT - initialises ( sets up ) your working directory for Terraform 
+
+→ configures the backend - where Terraform will store the  .tfstate file , whether that’s local file on computer or remotely ( like in S3 ) = now allows Idompotency 
+→ It downloads your provider plugins ( source and version )
+→ Initialises Modules - if using modules ( reusable pieces of configuration ) , it downloads them too 
+→ prepares working directory it gets everything ready so you can plan or apply changes after 
+
+
+What does Terraform PLAN do ? 
+
+PLAN - doesn’t change anything and is just a preview 
+
++ create = Resources are created 
+~ update in place = Resources are updated / modified 
+
+– destroy = Resources that will be deleted 
+￼
+
+→ it compares your current state .tfstate to your configuration ( desired state ) .tf
+→ it shows what will be created , update or destroyed 
+→ review changes before applying them 
+→ helps catch errors before infra changes made 
+
+
+What does Terraform APPLY do ? 
+
+Apply - Takes the plan and executes planned changes 
+
+→ It creates , updates and destroys real infrastructure to match your configuration 
+→ you can review and confirm before you proceed 
+→ after APPLY the infrastructure state matches your desired state 
+→ state file .tfstate is then updated to reflect the current changed infrastructure 
+￼
+
+What does Terraform DESTROY do ? 
+
+Destroy  → removes the infrastructure that the state file says been created and cleans up 
+
+→  Deletes all infrastructure created 
+→ reads state file .tfstate to know what resources to remove 
+→ shows you a plan of what will be destroyed 
+→  you confirm and state file now reflects the resources are gone 
+
+
+Reading and configuring a Resource block in Terraform ? 
+
+Resource "aws_instance" "Test" {                  Resource type , “local name of the insurance ”
+ami = "ami-01572eda7c4411960"                   amazon machine image = template of your Virtual machine (ec2) will be used to launch the image 
+instance_type = "t2.micro"                              defines the size and capacity (hardware configuration like cpu and memory )
+Tags = {
+Name = "Helloworld"                                        Tags to help identify resource in the AWS console ( might say DEV , PROD , STAGING)( Best practice )
+
+
+Terraform importing resources from the cloud ?
+
+The ‘terraform import’ command allows you to import existing resources that weren’t built on Terraform to be under the management of terraform 
+
+→ You want to integrate Terraform into your existing infrastructure without recreating from scratch 
+→ Identify the resource you want to import 
+→ use import block to import instances using the id 
+→  Create the resource block in terraform config  = provider , region , resource “x” and “name”
+→ now you have it under terraform management 
+
+￼
+
+→ terraform import aws_instance.web I-12345678
+=  run a terraform plan and keep making changes until your desired state matches your current state .tfstate 
+- You want to obtain a 0 changes when your terraform planning and applying 
+
+
+Practically 
+
+Add another resource block with ami , instance type , subnet id + tag name 
+Then terraform plan your way to zero changes 
+
+
+
+
+Local state files and Remote statefiles
+
+Local state file = working alone , personal project and one person controlling infrastructure 
+
+Remote state file = stores state file remotely in AWS S3 / Terraform cloud - suitable for team collaboration 
+- Centralises the state so team can collaborate 
+- Ensures consistency 
+- When using S3 with dynamoDB / terraform cloud for locking - ensures one person at a time can change state file .tfstate 
+- S3 stores the .tfstate and dynamoDB state locks and provides versioning and lock history 
+- Commonly used with a remote backend like S3 , Terraform cloud / remote database in terraform provider block 
+
+Production issues : 
+→ without state locking there can be infrastructure drift (real world infra and configuration not matching)
+→ data corruption or loss / not backed up 
+→ website / app downtime 
+
+Best practices:
+→ make sure to constantly backup 
+→ make sure your backend supports state locking 
+→ encrypt data and apply access controls 
+→ don’t commit state files to GitHub but might need versioning from git
+
+Add remote s3 backend to terraform block with : 
+
+terraform {
+  backend "s3" {
+    bucket = "mybucket"
+    key    = "path/to/my/key"
+    region = "us-east-1"
+  }
+}
+
+
+Entire Terraform work flow ?
+
+Terraform init - initialises , creates working directory for config files (download providers etc )and remote backend for state file 
+Terraform validate - helps with syntax errors and if config files structures well 
+Terraform plan - comparing desired .tf with state file .tfstate and showing differences 
+Terraform apply - apply changes from desired to state file and updating state file after
+Terraform destroy - managed way to tear down terraform managed infrastructure 
+
+
+Why are Terraform Variables used?
+
+Variables are used to make your code more flexible and to avoid sifting through terraform documentation 
+- They have reusable configuration instead of hard coding values in your .tf config files 
+- This makes it adaptable across dev , staging , production 
+- Dynamic configuration without altering code 
+- Reducing redundancy & potential errors 
+- Manage different environments with the same configurations 
+- Define values once and modules for reusable code 
+
+Main .tf = for resources 
+Variables.tf = to hold your resource block definitions and how to use them 
+Outputs.tf = if you want to expose data 
+Providers.tf
+
+module ( call upon in Root configuration ) = premade resource block , used multiple times and you can define values 
+
+
+Input variables Vs Local variables in Terraform ? 
+
+Input variables are values you supply externally like what the instance type Is  = t2.micro
+
+Local variables are shortcuts/ code blocks you use when you want to repeatable use code without repeating yourself
+- You use local variables to Keep code dry 
+- Avoiding repeating yourself 
+- Help reduce redundancy 
+
+→ you can put them in your main tf or you can assign them to their own locals.tf (safe to commit)
+￼
+
+Output variables exposes data that is critical to see in terminal for things like automation , manual intervention or changing terraform configs 
+- Be cautious using using sensitive information 
+- And use value= “sensitive” in order to hide critical things 
