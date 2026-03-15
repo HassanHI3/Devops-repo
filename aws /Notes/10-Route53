@@ -1,0 +1,278 @@
+DNS ( Route 53 )
+
+→It acts like a phonebook, translating website names into IP addresses.
+→It is an authoritative DNS, directing users to correct IP addresses   +  authoritative = customer ( you ) can update the DNS records 
+→It helps route users to your website, app, or AWS resources quickly and reliably.
+→AWS service that provides 100% availability SLA = zero downtime / going down 
+→Route 53 has ability to check resource health 
+ 
+
+Client → example.com? → Route 53                       Domains = main address -  example.com  / Sub-domian = specific part of the website -  blog.example.com
+
+Route 53 ->  54.22.33.44 -> client                                        
+Client → ( AWS cloud ) EC2 instance with public IP  54.22.33.44
+
+
+
+Route 53 - Hosted zones in AWS ?
+
+Route 53 — DNS service
+→ Private & public hosted and configured inside route 53
+
+
+Hosted zones = Containers holding DNS records for a domain example.com ( a record , CNAME , MX records )
+
+ → Public Hosted zone = lets the public look up the DNS records for a domain + can query this if needed ( if u want your domain visible )
+
+ → Private Hosted zone = normally in a VPC where you can’t look up the DNS records for a domain ( internal service that you don’t want exposed 
+     ( if u don’t your domain visible )
+
+Same price for private / public zones 0.50p
+Route 53 available and scalable
+
+
+
+
+Public vs Private hosted zones in AWS? 
+
+Create a Public Hosted zone  = when you want IP to accessible over internet
+ -> public facing and internet facing
+
+Create Private Hosted zone = when you want IP to be internally accessible and when dealing with a virtual private network (VPC)
+-> private facing and internal 
+
+
+
+
+What is DNS ?
+
+Domain name system = backbone of the internet 
+→ human friendly host names and converts them into machine IP addresses 
+→ Google.com = 154.434.12.34
+→ Works in hierarchal structure → “ . ” → . com → example.com → blog example.com
+→ Root → Top level domain ( TLD ) → Second level domain → subdomain
+
+
+
+Domain registar vs DNS service in AWS ?
+
+Domain register (GoDaddy)  - pay to register the domain and they also give you a DNS service to manage it 
+DNS service - points to the right server and provides that IP address 
+
+→ But you can choose to use an alternative DNS service like Route 53 to manage your domain 
+→ to do this you insert the route 53 name servers that it provides into your GoDaddy account 
+
+
+
+3rd Party Registar with Route 53 ?
+
+1. Buy domain on 3rd party website 
+2. Create a publicly hosted zone in route 53 
+3. Update Nameservers from AWS and insert into 3rd party website
+4. Route 53 now manages your DNS service 
+
+
+
+
+What is some DNS terminology ? 
+
+Domain Registar → where you buy domain names from ( i.e GoDaddy / Cloudflare)
+DNS record → A , AAAA , CNAME , NS  ( device checks where to send request and instructions on how to handle your domain )
+Name server →  Resolves DNS queries ( Authoritative and non authoritative)
+Zone files → contains and holds domain DNS records (  text file  )
+Top Level Domain (TLD) →  .com , .us , .gov .org 
+Second Level Domain (SLD ) →  Amazon.com , google.com 
+Sub domain 
+
+Workflow example : if this is not cached at DNS resolver 
+Client request → DNS resolver →  DNS root says look for TLD → TLD  points to google.com  Authoritative Name server 
+
+After : 
+DNS resolver request  →  google Name server  →  name server looks for zone files needed ( I.e A record ) mapping domain to IP address 
+ → Authoritative Name server sends IP Address → DNS resolver receives → send IP address to user 
+
+Http://api.www.example.com
+protocol , Fully qualified domain name ,  Sub domain  , SLD  , TLD  ,   Root 
+
+
+
+How does DNS work ?
+
+Client request → DNS resolver →  DNS root says look for TLD → TLD  points to google.com  Authoritative Name server 
+
+After : 
+
+DNS resolver request  →  google Name server  →  name server looks for zone files needed ( I.e A record ) mapping domain to IP address 
+ → Authoritative Name server sends IP Address → DNS resolver receives → send IP address to user 
+
+
+
+What is the difference between CNAME and Alias?
+
+CNAME -> map one domain name to another domain name 
+
+Alias ( specific to Route 53 ) -> points domain name to an AWS resource - like a load balancer or s3 bucket 
+- Can be used a root domain example.com / blog.example.com (sub domain)
+- Free & doesn’t count as a DNS lookup ( cost efficient )
+- Native health checks - more resilience 
+
+
+What are Alias records in AWS? 
+
+Maps a domain name directly to an AWS resource ONLY 
++ when AWS resource changes IP address , route 53 is able to update the alias to keep mapping it to that resource 
+
+Alias record is always a type of A/AAAA record - so IPv4 and IPv6 
+- Can’t set a TTL as it’s auto changing if needed to map domain to AWS resource  
+
+
+Route 53 - Alias Record Targets 
+
+You can set a chain of Aliases to the same AWS resource 
+    - Example.com  → CloudFront 
+    - Blog.example.com → CloudFront 
+    - Mapping different domain names to the same AWS resource 
+
+Also can map to AWS : Elastic Load Balancer , API gateway , S3 , VPC endpoints , Global accelerator, Elastic beanstalk env’s 
+- But can’t set alias for a EC2 DNS
+
+
+
+
+
+
+Route 53 - A / AAAA records ?
+
+DNS records that map domain names to an IPv4 address 
+
+Each record contains : 
+
+→ domain name / sub domain name 
+→ record type = A or AAAA
+→ TTL - time to live = how long a DNS resolver caches your record before refreshing 
+→ Routing policy - determines how DNS response to queries 
+→ Route 53 supports DNS records type = A , AAAA , CNAME , NS , MX 
+
+
+
+Route 53 - Record Types ?
+
+A = maps to domain name to IPv4 
+AAAAA = maps domain name to IPv6
+CNAME = maps one domain to another domain - www.example.com = example.com  alias 
+NS ( Nameserver) = name server for hosted zone and controls how traffic is routed for a domain ?****
+
+
+
+Route 53 - Time To Live ?
+
+TTL is mandatory for DNS records except alias 
+
+High TTL - caches the response (typically an IP)
+   + Good because it means less traffic will hit web server + route 53 for response 
+- Bad because what if the response is outdated 
+
+
+Low TTL -
+- Bad because more traffic will hit route 53 and web server + more cost 
+
+  + Good because responses are outed for less time 
+  + easy to change records (updating ip’s etc )
+
+
+
+Route 53 - Health checks ?
+
+Health checks monitor the availability of endpoints / resources 
+- If an endpoint / resource fails check repeatedly = marked as unhealthy = DNS failover 
+
+
+HTTP/s health checks are used to test web endpoints - for status codes 
+TCP health checks monitor whether a port is open ( useful for non HTTP service )
+
+You can check AWS resources by tying AWS Cloudwatch alarms to route 53 health checks 
+- Same for Amazon RDS directly to check database availability - if unhealthy = DNS failover = auto shift traffic to healthy alternative backup (server ,region , site etc )
+
+DNS failover can be triggered by health check failures , routing traffic to healthy endpoints 
+Health checks can be public or private and check internal resources too 
+They run at intervals and must meet success / failure thresholds 
+
+
+
+
+Route 53 - Routing (responding) policies in AWS ?
+
+This defines how route 53 will respond to DNS queries 
+- Its not the same “routing” like a ALB which routes traffic 
+- DNS doesn’t route traffic only responds to DNS queries 
+
+
+1. Simple routing
+- Same static response
+- If there are multiple values are returned for a query one will be chosen at random
+
+———————— 
+2. weighted routing = control the percentage % off the request that goes to each resource 
+- 60 % to endpoint 1 and 40 % to endpoint 2 
+- If all records have a weight of 0 , then all records returned equally 
+- DNS records that we splitting traffic between have to be the same name and type ( have to be under the same domain “example.com records”)
+- Weights don’t have to equal 100%
+- Traffic % = weight of specific record / sum of all weights for all records 
+
+Uses cases : load balancing between regions or end points  , gradual deployment 
+
+—————————
+
+3. Latency based routing = Routing to the resource that has the least latency close to us 
+- Helpful when latency is important of user 
+- Latency is based on traffic between users and AWS regions 
+
+i.e - Germany users may need be redirected to the US ( if that’s the lowest latency )
++ can be associated with health checks ( has a failover capability )
+
+
+——————————
+
+4. Geolocation routing = route based on user’s location ( location specific content ) 
+- Configure based of user location (county , city , state etc )
+- Create a default record - if no match country is found user still receives response 
+- Can be associated with health checks - route 53 will monitor if the resource is healthy and reliable endpoints ( if not healthy R53 will choose an alternative )
+
+Use cases = website localisation , restrict content distribution , load balancing 
+
+
+———————— 
+
+5. Geo proximity Routing = routing based on your resources based on geographical location of users and resources 
+
+- Have ability to shift more traffic to resources based  on the defined bias 
+- Use Route 53 traffic flow to change size of geographical region and specific bias values 
+- To expand ( 1-99 ) - more traffic to the resource 
+- To shrink (-1 to 99 ) - less traffic to the resource 
+- Resources can be AWS resources ( Specify AWS region)
+- or non AWS resources ( Specify Latitude and longitude )
+ 
+
+Client - dns resolver - route 53 - routing policy and checks resource locations  - returns  ip of the closest resource 
+
+————————-
+
+6. IP based routing = route 53 uses requester IP address to determine which endpoint / resource they should route them to 
+- CIDR blocks define where to send users per server / endpoint  for example 
+
+Use cases : optimise performance , ensuring compliance based on countries , routing to internal networks and network costs 
+
+
+————————
+
+7 . Multi value routing = that responds multi healthy multiple values / resources / endpoints - client then can choose 
+
+- If one fails they can choose another - high availability and failover + balancing load ( auto shifting traffic if something goes wrong ) spreading traffic when all is healthy = getting multiple ip’s 
+- Can be associated with health checks 
+- Up to 8 healthy records are retuned for each multi value query 
+- Not a substitute for a having a elastic load balancer 
+
+
+Failover routing = provide a backup if primary fails 
+
+
