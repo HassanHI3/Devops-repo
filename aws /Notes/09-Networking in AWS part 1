@@ -1,0 +1,111 @@
+AWS networking 
+
+Made up of :
+
+1. Amazon VPC - virtual private cloud  (isolated network environment)
+
+→ Define custom IP ranges and subnets 
+→ control which resources are public & private 
+→ can mimic on perm network control in the cloud 
+→ you manage routing , internet gateways & VPN’s 
+→ Security is managed through - security groups + network ACL’s 
+( access control lists - subnet level + they’re stateless  = explicitly have to allow traffic into them )
+
+2 . Route 53
+3 . CloudFront 
+
+
+Understanding CIDR - IPv4 ( classless inter domain routing ) octets 
+
+→  Base IP address : starting point of the range [ 0-255 ] . [ 0-255 ] . [ 0-255 ] . [ 0-255 ]  max 32
+
+→ Subnet mask : defines how many bits change in the IP 
+- /24 = 24 bits are for the network portion  & remaining 8 bits ‎ = 1 bytehost addresses within the network 
+- /32 = unique address and pin pointing a single ip address (no room for host range )
+
+To find out IP range 
+- 192.168.0.0 - 192.168.0.255 ( count the .0 as one IP so it is 256)
+- /24 - 32 = 8  
+- So 2 * 8  = 256 Ip addresses  = your CIDR range **
+
+- /0 = all IP addresses 
+
+
+There’s only 4 octaves available [0-255]
+
+192.168.0.0/16 = so 16 bits are for the network and the rest for host range 
+16-32 = 16 
+So 2 * 16 =65,536 - ip’s 
+192.168.255.255
+
+
+IANA - internet assigned numbers authority established blocks of IPv4 address that can be used by private ( LAN ) and Public ( Internet ) addresses 
+
+Private can only allow certain values : These three ranges, they're usually considered private IPs with the exception of 127.0.0.1
+
+10.0.0.0 - 10.255.255.255 = 10.0.0.0/8 - in big networks 
+
+172.16.0.0 - 172.31.255.255 = 172.16.0.0/12 - AWS default VPC in that range 
+
+192.168.0.0 - 192.168.255.255 = 192.168.0.0/16 - home networks 
+
+[ All the rest of the IP addresses on the internet are public ]
+
+
+Default Virtual private cloud ?
+
+→ All new AWS accounts have a default VPC
+
+→ New EC2 instances are launched into the default VPC if no subnet is specified 
+
+→ Default VPC has comes with internet connectivity by default so ANY EC2 launched can connect to WWW + have a public IPv4 address 
+
+→ EC2 instances in the Default VPC get a public & private IPv4 DNS name 
+
+
+AWS VPC dashboard ?
+
+
+BEST practice in production to create custom VPC’s = isolated resources + tailored to workload and security standards 
+
+→ Subnets - dividing your network into smaller segments
+→ route tables decide where your traffic goes 
+→  intenet gateway - the resources/ instances are then able to access the internet ( traffic in/out the VPC )
+→  Ipaddressguide.com/cidr = kets you see the ip ranges within the IPv4 CIDR you have for your VPC 
+
+
+VPC - Subnets for IPv4 ? 
+
+Subnets are the small networks within your VPC  
+
+Can be public / private -> depending if they have access to the internet  
+
+Each VPC divided into multiple subnets -> allows you to segment your resources across different AZ’s = better redundancy + availability 
+
+→ AWS reserves 5 IP addresses for each subnet - not available for you to use by your resources ( EC2 instance )
+
+Example 1: 
+CIDR block 10.0.0.0/24  = 24 bits are for the network and the 8 rest are for the host range 
+32-24 ‎ = 8    so 2 * 8 = 256 IP addresses
+
+Subnet reserves first 4 and last one so :
+10.0.0.0 - network address 
+10.0.0.1 - reseved for VPC router 
+10.0.0.2 - reserved for mapping to amazon provided DNS ( IP address for DNS server )
+10.0.0.3 - reserved for future use 
+Last one 
+10.0.0.255 - Network Broadcaster Address → AWS doesn’t support broadcast in a VPC so address is then reserved 
+
+
+
+Internet Gateway and what it is in VCS ?
+
+→ IG allows your resource ( EC2 instance ) within your VPC that has an IP address to connect to the internet 
+→ Scaled horizontally ( can handle increase in traffic ) + highly available and redundant 
+→Must be created  separately  from a VPC ( not made automatically )
+
+→ can only connect one Internet Gateway to a VPC 
+→ Internet Gateways alone do not allow internet access ( you have to update your route tables )
+→ Route tables must be updated 
+
+
