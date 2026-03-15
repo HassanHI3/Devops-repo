@@ -1,0 +1,130 @@
+Security groups and cloud networking
+
+
+What are security groups ?  
+= Security groups are virtual firewalls for AWS instances like EC2
+
+
+ → Security group rules can reference by IP or by security groups ( instances with similar security group)
+
+ → They control inbound and outbound traffic at the instance level ( EC2 instance )
+ → Security groups contain  “Allow rules” that for example allow traffic - SSH on port 22 / HHTP on port 80
+ → Any traffic not explicitly allowed is denied    so u can block ssh etc 
+ → Help secure your AWS resource / service 
+
+
+Security groups in detail? 
+
+Security groups acting as virtual “firewalls”  on an EC2 instance 
+
+Security Groups regulate things like : 
+- Access to PORTS
+- Authorised IP ranges = IPv4 & IPv6
+- Control inbound / outbound traffic = to and from the EC2 instance  <-> (like preventing it access to the internet )
+
+Best practice to keep security groups as tight as possible 
+ → I.e HTTP request ride on top of TCP protocol (connection based protocol ) to ensure it can be access from any IP and listens on port 80 
+ →  but SSH request to connect rides on top of TCP protocol and listens on port 22 but can be accessed by a specific IP address (my own )
+
+
+Security group diagram ?
+
+Your computer ( IP XXX ) authorised port 22  → Security group 1 inbound (Filter IP/Port with rules )  →  SSH into EC2 instance 
+
+EC2 instance  →  (outbound traffic)  →  security group 2 outbound (Filter IP/Port with rules ) → AWS allow outbound to any port (download updates) → WWW (any IP - ANY PORT)
+
+** Best practice- tighten outbound rules for your EC2 instance 
+
+
+Extra info on security groups ?
+
+→ can be attached to multiple instances 
+→ they can be locked down to a region / VPC combination *
+→ If traffic is blocked by SG the EC2 won’t see it 
+
+→ Good to maintain one security group for SSH access 
+→ if application not available / times out = security group issue 
+→if application has “connection refused” = application error / not launched 
+
+→ all inbound traffic is blocked by default 
+→ all outbound traffic is authorised by default 
+
+
+Referencing other security groups of EC2 instances ?
+
+I.e within an ECS Cluster you can have different part of an app as microservices within multiple EC2 instances 
+
+For the EC2 Instances to communicate  
+→ you reference the other security groups to be able to receive inbound traffic on a certain port 
+
+EC2 x3 -> port 123 ->  Security group 1,2,3   -> EC2 instance   <->
+
+
+
+Important PORTS to know ?
+
+Port 22 = SSH (secure shell) login into linux instance 
+
+Port 21 = FTP ( File transfer protocol) upload files using file share 
+
+Port 22 = SFTP ( secure file transfer protocol) - upload files using Ssh
+
+Port 80 = HTTP access to unsecured websites 
+
+Port 443 = HTTPS - access to secure websites 
+ 
+Port 53 = DNS - for DNS queries and resolving 
+
+3389 RDP ( Remote Desktop protocol ) - login into windows instance 
+
+
+
+
+
+What are Elastic IP’s 
+
+When you start and strop an EC2 instance it can get assigned another IP address 
+= due to AWS allocates IP addresses dynamically 
+
+→ If you need a fixed IP address for security rules , polices , whitelisting or External access = use an Elastic IP 
+- It is a PUBLIC IPv4 IP that you own as long as you don’t delete it 
+
+→ But can only attach it to one instance at a time 
+
+
+When to use an elastic IP ?
+
+→ You can mask the failure of an instance of software with an elastic IP by rapidly remapping the address to another healthy instance 
+- But can only have 5 Elastic IP in your account ( unless increased by AWS )
+
+→ Overall AVOID using Elastic IP 
+- As they reflect poor architecture diagrams 
+- Instead use random public IPv4 addresses and register DNS name to it 
+
++ use a load balancers and that doesn’t use a public IP **
+
+ ON AWS 
+
+EC2 - Network + security -> elastic IP  ( and then associate it with a running EC2 )
+
+
+
+IPv4 vs IPv6 ?
+
+
+IPv4 → [0-255].[0-255].[0-255].[0-255]
+-  is still the most common format used online 
+- Allows for 3.7 billion different addresses in the public space 
+
+Public = unique and machine is reachable over internet → must be unique + geo lacated easily 
+
+Private = machine can only reachable on a private network 
+- IP must be unique across the private network 
+- 2 private networks (different companies) can have the same IPs
+- Machines connect to internet using → NAT + internet gateway ( a proxy )
+- Only a specific range of IP’s can be used as a private IP  
+
+Client initiates request to public web server -> travels over internet -> request hit public internet gateway -> securely routes to private network whilst shielding everything internal 
+
+IPv6 - is newer and solves problems for the internet of Things (IOT)
+
