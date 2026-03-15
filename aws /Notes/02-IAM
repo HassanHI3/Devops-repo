@@ -1,0 +1,143 @@
+IAM 
+
+
+(IAM) Identity and access management 
+
+
+Users and groups:  
+*users don’t have to belong to a group * 
+*users can belong to multiple groups*
+*groups don’t contain other groups *
+
+IAM root user -> the first user created that is a “super user” that has access to everything in AWS - can change and modify 
+User -> created by the root user and the permissions assigned ti it like read only / custom polices 
+Group -> collection of IAM users that have policies and permissions allocated to them by the root user -> efficient way to manage many users 
+
+Practical steps   
+- Adding users names and passwords - able to send them an email 
+- Adding users to groups 
+- Back to IAM dashboard - top right - Sign-in URL for IAM users in this account
+
+
+
+Policies & permissions:     You attach policies → Policies contain permissions
+
+Policy (JSON documents) ->  is a set of rules that define what actions are allowed/denied in AWS -> read only access  
+- Managed Policy → Separate, reusable policy
+- Inline Policy → Built directly inside one IAM identity
+- Example -> user is created , added to group A with policy 1 and has an inline policy attached policy 2 = policy 1+ policy 2
+
+Permission -> is the practical application of a policy when it is applied to a user/ group -> user can only read the document  
+- Apply least privilege for best practice
+
+{
+  "Version": "2012-10-17",   - policy language version 
+  "Id": "PolicyIdentifier",       - identifier for policy (optional) 
+  "Statement": [                        - one/more individual statements ( required ) 
+    {
+      "Sid": "StatementIdentifier",    - an identifier for the statement ( optional ) 
+      "Effect": "Allow",                           - whether the statement allows/deny access ( Allow/deny )
+      "Principal": {                                    
+        "AWS": "arn:aws:iam::123456789012:user/Hassan" -             ]- account/user/role this policy applies to 
+      },
+      "Condition": {                                                 ]- conditions for which this policy will apply 
+        "IpAddress": {
+          "aws:SourceIp": "203.0.113.0/24"
+        }
+      },
+      "Action": "s3:GetObject",                    - list of Actions this policy will deny/allow 
+      "Resource": "arn:aws:s3:::my-bucket/*"       - list of resources to which the actions applied to 
+    }
+  ]
+}
+
+Identity vs Resource policy difference
+Trust policy vs Permission policy
+Role assumption flow
+Explicit Deny precedence
+Least privilege design
+Using Conditions properly
+Cross-account access basics
+
+
+Passwords: higher security for your account 
+- You can allow your IAM user change their own passwords 
+- Require to change their passwords after time ( expiration ) 
+- Prevent password re-use 
+- In production SSO mostly used as its more secure 
+
+
+
+Multi Factor Authentication: password you know + security device you own 
+
+- adds secondary layer of security to your root user / IAM user 
+- If password compromised account is fine as MFA requires a second fact ( device to authenticate ) 
+
+MFA options in AWS =  Virtual MFA device - google authenticator - multiple tokens 
+- Universal 2nd factor security key (UTF) - support for root & IAM users with single security key 
+- Hardware key fob MFA device 
+- Hardware key FOB MFA Device for AWS GovCloud
+
+
+
+ 
+IAM roles
+
+IAM user -> get permissions via policies 
+
+IAM roles for services -> temporary credentials where a ( user , aws service , application ) can “assume ” a role a temporarily receive its permissions 
+
+- Ex. ->  EC2 instance running on flask app and it needs to read an S3 bucket =  youattach IAM role to the EC2 instance , instead of hardcoding access keys 
+
+IAM security Tools  -> Help monitor and strengthen access controls 
+
+- IAM access advisior  = identifies roles/resources that have been shared outside your account + when last accessed (user-level)
+- (Bonus)= setting service control policies for AWS organisations as guardrails for multiple accounts 
+
+- IAM Credentials report (account level)
+-  Shows when account users and their status of their various credentials were accessed 
+
+
+IAM guidelines and best practices 
+- Don’t use root user except for AWS account set up 
+- Assin users to groups and give permission that way 
+- Strong password and MFA 
+- Use IAM roles for services 
+- Use access keys for AWS SDK 
+- Audit permission with AWS credentials report and AWS access analyser 
+- Don’t share IAM keys or users 
+
+
+
+User policy attach to a user group & role can be attached to services
+
+
+
+
+How can you Access AWS? 
+1. AWS Management console (protecter by password +MFA )
+2. AWS command line interface (CLI ) - protected by access keys 
+3. AWS software developer Kit ( SDK ) - for code : protected by access keys 
+
+Access Keys -> generated through AWS console -> best practice to rotate and switch them 
+- Users manage their own keys 
+- Access keys are like secrets you can’t share them 
+
+Access key ID = username 
+Secret Access Key = password 
+
+
+What is AWS CLI ? -> run commands through CLI to manage AWS resources 
+- Helps you interact with aws service through the terminal  - aws login 
+- Can do everything you can do in the aws management console 
+- Lets you interact using commands in your command line shell
+- Aws configure - access keys 
+- (Check if your logged in) - aws sts get-caller-identitiy 
+- aws iam list-users 
+
+What is the AWS SDK - software developer kit 
+- Tools for developers that helps your code talk to AWS services 
+- SDK gives ready made functions , classes and methods to add to your code ( python , java etc ) to interact with AWS 
+- Like spin up an EC2 or upload files to an S3 
+- Ex. - python SDK = botos3 
+
