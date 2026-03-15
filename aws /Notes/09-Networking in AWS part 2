@@ -1,0 +1,228 @@
+What are Bastian Hosts in AWS ?
+
+- Acts a secure entry point and is connected + has access to all other private subnets 
+
+- Bastian Host security group must allow  inbound from internet (port 22) from restricted CIDR IP ( i.e company IP )
+- Security group of EC2 instance must allow the Bastian Host security group to connect 
+
+→  Virtual private cloud → create a public + private subnet 
+→ Launch Bastian Host EC2 instance (public IP) in public subnet
+→SSH into Public facing Bastian Host ( can access the internet )
+→ then SSH into the private EC2 instance (private subnet) (database / internal apps ) that has no internet access
+
+
+Alternatives ?
+
+→ Can put Bastian Host in private subnet 
+→  access these resources in the private subnet through VPN / AWS private link 
+
+
+What is a NAT Gatway in AWS ? 
+
+AWS service that allows instances ( i.e EC2’s ) in private subnet to initiate outbound internet connect - downloading updates from WWW
+
+Private subnet →  ( route table ) NAT GW ( sits in public subnet) →  Internet Gateway →  WWW
+
+Private instances in private subnet send request to NAT Gateway 
+→  NAT Gateway forwards request to internet using NAT public IP  
+→  return traffic comes back 
+→  private instances stay hidden and not exposed to internet 
+
++ instances in private subnet can connect to internet whilst blocked from incoming internet traffic 
++ NATGW is created in a specific availability zone ( resilience so create multiple ) + elastic IP ( traffic always knows where to return to - fixed )
++ no security group management 
++ pay per hour 
+
+
+Nat Gateway for High availability architecture  ? 
+
+→  Nat Gateway created in a specific Availablity zone and uses an elastic IP 
+→  1 Nat Gateway per EC2 instance per Subnet 
+
+Best practice to create NAT Gateway in 2 availability zones for high availability and resilience 
+
+AWS region →  VPC →  AZ- A ( private subnet ( EC2 instance ) + public ( NATGW ) ) →  Router →  Internet Gateway →   WWW
+                                     → AZ- B ( private subnet ( EC2 instance ) + public ( NATGW ) ) →  Router →  Internet Gateway →   WWW
+
+
+
+NAT Gateway ( auto ) vs NAT instance ( manual ) in AWS ?
+
+→ Both allow private instances have access to the internet + have access to public / private IP’s
+
+→ NAT instance however gives you more granular control 
+= at the cost of having to monitor availability , scaling , security groups etc 
+
++ can use it as a Bastian Host where u can’t with a NAT Gateway 
+
+– But NATGW can manage 100gb bandwidth so scales auto where as NAT instance doesn’t 
+
+
+
+
+Network access control List ?
+
+NACL - filter at the (Subnet level) that checks whether traffic should be allowed or denied   based on rules defined 
+
+→  Like a firewall which controls traffic from & to subnets 
+→ NACL is a great way to block specific IP addresses at subnet level 
+→ 1 NACL per subnet 
+→ New subnets are assigned default NACL and will deny everything 
+
++ NACL rules go from #1-#32766 
++ lower number takes priority 
++ #100 says allow and #200 says deny = allow 
++ last rule is an asterisks * to deny request if no rule found 
+
+AWS region  →VPC → NACL connected to subnets  ( private subnet ( (security groups attached to instances) EC2 instance ) + public ( NATGW ) ) 
+                                                                                                                 AZ-A
+
+
+Inbound traffic :
+
+NACL are attached at the subnet level and are checked first regardless of inbound / outbound  (stateless)= have to specifically define what can go in/out 
+
+Security groups ( that are attached to instances ) then second (stateful )= remembers traffic so if it’s let in , it can go out 
+
+
+
+Virtual private cloud (VPC) Peering in AWS ?
+
+A direct connection between 2 or more VPC’s - without the need over going over the public internet 
+→  once peered - resources in different VPC’s can communicate using private IP’s
+
++ used when you have multiple VPC’s in different regions / accounts and want to share data 
++ no overlapping CIDR 
++ make them behave like they’re in the same network 
+
+VPC Peering isn’t Transitive  = VPC A - VPC B   but VPC A can’t talk to VPC C directly , so you need a direct peering of A & C
+  
++ must update route table for VPC subnets so EC2 Instances can communicate with each other 
+
+
+
+VPC peering between accounts / regions inn AWS ?
+
+→ you can create VPC peering between accounts / regions 
+→ you can reference a Security group in a peered VPC ( works across accounts but have to be in same region ) 
+
+Example: connection between 2 VPC’s 
+1. Create VPC for one and two ( each VPC has own CIDR block so set of IPv4’s )
+2. Create VPC peering request 
+3. Accept peering request 
+4. Update route tables (using same CIDR block )
+5. Configure Network access control list & security groups ( allow port access )
+6. Resources can communicate over private IP and controlled environment
+7. 
+8. ￼
+
+Your defining what traffic is allowed and the source is the other account and the security group that allows it to be routed here 
+
+
+VPC endpoints ( AWS Private Link ) ?
+ 
+Every AWS service is public exposed ( public URL )
+
+→ VPC endpoints allow you to connect to AWS services privately instead of public internet 
+
++ VPC endpoints are redundant and horizontally scale 
++ They remove the need of a NAT Gateway , Internet Gateway to access AWS resources 
+
+– in case of issues check DNS settings resolution in your vac 
+– Check route tables 
+
+
+Private subnet 
+EC2 instance → VPC endpoint → directly to Amazon SNS etc 
+
+
+Types of VPC endpoints / AWS private links ?
+ 
+Interface endpoints → creates dedicated elastic network interface (with it’s own private IP) as an entry point 
+→ ( must attach security group )
+= your given a private IP  & can connect to range of AWS services/ your own app
+– per hr & per GB = costly 
+
+AWS region → VPC → Private Subnet → EC2 instance → VPC endpoint ( Elastic Network interface ) → Amazon SNS
+
+Gateway endpoints →  simpler and are routes added to your route table 
+– only can connect/ work for specific AWS services like S3 or dynamo DB 
++ free
++ no security group attachment needed 
+
+AWS region → VPC → Private Subnet → EC2 instance → VPC endpoint →  S3 OR Dynamo DB 
+
+
+What is IPv6 in AWS ? 
+
+This is the successor to IPv4 as we are running out of their addresses 
+
+→ IPv6 in AWS is public + internet routable ( no private range so secure it with SG + NACL + Firewalls )(same as IPv4) vs IPv4 there is private range 
+→ 8 sections of 4 that range from 0-9 and A-F =[xxxx]:[xxxx]:[xxxx]:[xxxx]:[xxxx]:[xxxx]:[xxxx]:[xxxx]
+
+
+IPv6 in Virtual private networks in AWS?
+
+IPV4 cannot be disabled in you VPC and subnets 
++  But you can enable IPv6 ( Public IP addresses ) to operate in dual stack mode 
+
+dual stack mode = both IPv4 and IPv6 are enabled 
+
+→ Your EC2 Instances in a VPC will at least get a private internal IPv4 address and public IPv6 IP address 
+→ EC2 instance (public and private IPv4/6 ) →  either can be used to communicate with internet gateway 
+
+Examples :
+
+EC2 private IPv4 →  NAT GW ( converts it to its own public IP address) →  internet gateway 
+EC2 public IPv6 -> NATGW (no conversion as it’s public ) →  internet gateway 
+
+
+
+IPv6 troubleshooting with EC2 instances ?
+
+Trying to launch EC2 instance -> subnet (in VPC) and it’s not working 
+
+→ This is because you always need an IPv4 IP address for you EC2 instance regardless of having a IPv6 address 
+→ there’s no available IPv4 in your subnet 
+
+Solution = Create a new IPv4 CIDR in your subnet 
+
+
+
+Egress only Internet gateway IGW in AWS ?
+Egress = traffic that’s leaving 
+
+→ This adds an extra layer of security of security 
+→ ensures unwanted traffic from WWW doesn’t reach IPv6 instances 
+
+Inbound internet gateway - managed through security groups 
+Outbound egress only internet gateway - only lets traffic leave and only IPv6 be used 
+
+IPv4 traffic just use internet gateway 
+IPv6 have the option of using egress only internet gateway for outbound traffic 
+
++ must update route tables *
+
+
+How IPv6 routing works within a VPC that operates in dual stack mode ?
+Dual stack VPC 
+
+dual stack mode = both IPv4 and IPv6 are enabled 
+
+
+AWS region 
+VPC - IPv4 + IPv6 (address )
+
+Public subnet - IPv4 + IPv6 (public address)
+                       → Web server - IPv4 + IPv6  public → Internet Gateway → WWW 
+	
+ 
+￼
+Private subnet - IPv4 (private address) 
+                            → server -> private IPv4  → NAT Gateway in public subnet  → routes traffic with its own elastic IP  → Internet Gateway  → WWW
+                             
+                            IPv6  → Egress only internet Gateway (IPv6 outbound traffic ) → WWW 
+
+
+
+
