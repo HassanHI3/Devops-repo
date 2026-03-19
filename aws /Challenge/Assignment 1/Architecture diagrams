@@ -78,3 +78,7 @@ Outbound from Private EC2:
 Private EC2 → NAT Gateway → IGW → Internet
 
 Private EC2 cannot receive direct inbound traffic from the internet.
+
+
+Bastian Hosts 
+- Public EC2 also acting as bastian host 
