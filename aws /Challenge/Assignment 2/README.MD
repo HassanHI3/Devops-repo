@@ -1,12 +1,12 @@
-###Assignment 2 - Application Load Balancer#
+### Assignment 2 - Application Load Balancer#
 
-###A common DevOps pattern: multiple EC2 instances behind an ALB. This teaches load balancing, health checks, and proper security group isolation.
+### A common DevOps pattern: multiple EC2 instances behind an ALB. This teaches load balancing, health checks, and proper security group isolation.
 
-##Objective
+## Objective
 
 Deploy two EC2 instances behind an ALB. The ALB must handle all incoming traffic. EC2 instances should not be accessible directly from the internet.
 
-##Tasks
+### Tasks
 
 1. Two EC2 Instances
 
@@ -17,6 +17,7 @@ Deploy two EC2 instances behind an ALB. The ALB must handle all incoming traffic
 - Install a simple web server using user-data
 
 - Each instance should return different content for testing
+
 
 
 2. Set Up the ALB
@@ -32,6 +33,7 @@ Deploy two EC2 instances behind an ALB. The ALB must handle all incoming traffic
 - Configure a health check on the root path /
 
 
+
 3. Security Groups
 
 - ALB SG: allow HTTP from anywhere
@@ -39,6 +41,7 @@ Deploy two EC2 instances behind an ALB. The ALB must handle all incoming traffic
 - EC2 SG: allow HTTP only from the ALB SG
 
 - Do not allow direct public access to EC2
+
 
 
 4. Testing
@@ -60,6 +63,7 @@ Deploy two EC2 instances behind an ALB. The ALB must handle all incoming traffic
 - Configure a health check on the root path /
 
 
+
 3. Security Groups
 
 - ALB SG: allow HTTP from anywhere
@@ -67,6 +71,7 @@ Deploy two EC2 instances behind an ALB. The ALB must handle all incoming traffic
 - EC2 SG: allow HTTP only from the ALB SG
 
 - Do not allow direct public access to EC2
+
 
 
 4. Testing
