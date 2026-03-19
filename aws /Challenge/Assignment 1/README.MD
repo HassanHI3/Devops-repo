@@ -37,9 +37,8 @@ Create a custom VPC with one public and one private subnet, set up internet acce
 
 Bonus
 
-Bastion Host for private EC2 access
-
-CloudWatch monitoring enabled
+- Bastion Host for private EC2 access
+- CloudWatch monitoring enabled
 
 Outcome
 
