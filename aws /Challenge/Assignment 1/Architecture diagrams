@@ -1,1 +1,80 @@
+VPC + Public/Private Subnet Architecture 
 
+
+                    ┌──────────────────────────────┐
+                    │        🌍 Internet Users      │
+                    └──────────────┬───────────────┘
+                                   │
+                                   ▼
+                    ┌──────────────────────────────┐
+                    │     🌐 Internet Gateway       │
+                    └──────────────┬───────────────┘
+                                   │
+         ┌─────────────────────────┴─────────────────────────┐
+         │              🏠 Custom VPC (10.0.0.0/16)          │
+         │                                                   │
+         │   ┌──────────────────────────┐                    │
+         │   │   Public Subnet          │                    │
+         │   │                          │                    │
+         │   │  ┌────────────────────┐  │                    │
+         │   │  │  🖥️ Public EC2      │  │                    │
+         │   │  │  Public IP         │  │                    │
+         │   │  │  SSH/HTTP from     │  │                    │
+         │   │  │  your IP only      │  │                    │
+         │   │  └────────────────────┘  │                    │
+         │   │                          │                    │
+         │   │  ┌────────────────────┐  │                    │
+         │   │  │  📍 Elastic IP      │  │                    │
+         │   │  │  attached to       │  │                    │
+         │   │  │  NAT Gateway       │  │                    │
+         │   │  └─────────┬──────────┘  │                    │
+         │   │            ▼             │                    │
+         │   │  ┌────────────────────┐  │                    │
+         │   │  │  NAT Gateway       │  │                    │
+         │   │  └────────────────────┘  │                    │
+         │   └──────────────┬───────────┘                    │
+         │                  │                                │
+         │                  ▼                                │
+         │   ┌──────────────────────────┐                    │
+         │   │   Private Subnet         │                    │
+         │   │                          │                    │
+         │   │  ┌────────────────────┐  │                    │
+         │   │  │  🔒 Private EC2     │  │                    │
+         │   │  │  No Public IP      │  │                    │
+         │   │  │  Internal access   │  │                    │
+         │   │  │  only              │  │                    │
+         │   │  └────────────────────┘  │                    │
+         │   └──────────────────────────┘                    │
+         └───────────────────────────────────────────────────┘
+
+
+📍 Route Tables
+
+Public Route Table
+• Default route (0.0.0.0/0) → Internet Gateway
+
+Private Route Table
+• Default route (0.0.0.0/0) → NAT Gateway
+
+
+🔐 Security Groups
+
+Public EC2 Security Group
+• Allow SSH only from your IP
+• Allow HTTP only from your IP
+
+Private EC2 Security Group
+• Allow access only from inside the VPC
+• Example: allow SSH from Public EC2 / Bastion Host only
+• ❌ No direct internet access
+
+
+🔁 Traffic Flow
+
+Inbound to Public EC2:
+Internet → IGW → Public Subnet → Public EC2
+
+Outbound from Private EC2:
+Private EC2 → NAT Gateway → IGW → Internet
+
+Private EC2 cannot receive direct inbound traffic from the internet.
