@@ -1,0 +1,69 @@
+Architecture Diagram – Application Load Balancer (AWS)
+
+                🌍 Internet (Users)
+                         │
+                         │ HTTP (Port 80)
+                         ▼
+                ┌───────────────────────┐
+                │  Application Load     │
+                │  Balancer (ALB)       │
+                │  Public Subnet A      │
+                │  Public Subnet B      │
+                └─────────┬─────────────┘
+                          │
+                Target Group (HTTP : 80)
+                          │
+          ┌───────────────┴───────────────┐
+          │                               │
+          ▼                               ▼
+ ┌───────────────────┐         ┌───────────────────┐
+ │   EC2 Instance 1  │         │   EC2 Instance 2  │
+ │   Private Subnet  │         │   Private Subnet  │
+ │   AZ A            │         │   AZ B            │
+ │   Web Server      │         │   Web Server      │
+ │   (User Data)     │         │   (User Data)     │
+ └───────────────────┘         └───────────────────┘
+
+
+🔐 Security Groups
+
+ALB Security Group:
+- Inbound: HTTP (80) from 0.0.0.0/0
+- Outbound: HTTP to EC2 Security Group
+
+EC2 Security Group:
+- Inbound: HTTP (80) ONLY from ALB Security Group
+- Outbound: Allow all (default)
+
+
+🧠 Key Flow (Step-by-Step)
+
+1. User visits ALB DNS name
+2. Request hits ALB (public)
+3. ALB listener (HTTP:80) receives request
+4. ALB forwards request to Target Group
+5. Target Group routes to healthy EC2 instance
+6. EC2 returns response (different content per instance)
+7. ALB sends response back to user
+
+
+❤️ Health Checks
+
+- Path: /
+- Protocol: HTTP
+- ALB checks each EC2 instance
+- Unhealthy instances are removed from rotation
+
+
+🚫 Important Rule
+
+- EC2 instances are NOT publicly accessible
+- Only ALB can talk to EC2
+
+
+💡 Optional Enhancements (for interviews)
+
+- Add Auto Scaling Group instead of fixed EC2
+- Add HTTPS (443) with ACM certificate
+- Add Route53 domain pointing to ALB
+- Add CloudWatch monitoring + alarms
