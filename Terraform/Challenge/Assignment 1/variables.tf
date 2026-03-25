@@ -13,7 +13,7 @@ variable "ip_address" {
   type        = string
 }
 
-variable "subnet_id" {
-  description = "The ID of the subnet to launch the instance in"
+variable "key_name" {
+  description = "The name of the key pair to use for SSH access"
   type        = string
 }
