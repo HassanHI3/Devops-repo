@@ -2,6 +2,8 @@
 
 This project demonstrates building a basic CI pipeline and a simple CD workflow to deploy a containerised Flask application.
 
+Run this through the CICD-assignments repo - https://github.com/HassanHI3/CICD-assignments
+
 ---
 
 ## 📌 Tasks
