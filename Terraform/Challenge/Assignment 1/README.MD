@@ -23,15 +23,15 @@ It provisions:
 - usable AMI ID and subnet/VPC values
 
 ## Deploy
-terraform init
-terraform fmt
-terraform validate
-terraform plan
-terraform apply
+- terraform init
+- terraform fmt
+- terraform validate
+- terraform plan
+- terraform apply
 
 ## Access
 # After apply, open the public IP or DNS shown in the outputs:
-http://<public-ip>
+- http://<public-ip>
 
 ## Destroy
 terraform destroy
