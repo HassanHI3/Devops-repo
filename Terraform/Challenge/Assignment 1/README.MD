@@ -31,7 +31,7 @@ It provisions:
 
 ## Access
 # After apply, open the public IP or DNS shown in the outputs:
-- http://public-ip
+- http://example.ip
 
 ## Destroy
 terraform destroy
