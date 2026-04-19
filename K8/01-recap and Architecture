@@ -1,0 +1,47 @@
+Recap-
+
+Containers = package the source code of an app and it’s dependancies into a lightweight portable container to used on different machines
+
+VM’s 
+- Are like fully computers with its own operating system 
+- Sits in-between hardware and vm’s = hypervisor 
+- Using the hypervisor it emulates the hardware ( virtualisation ) for each VM 
+- Running on a single physical machine (resource heavy ) (heavier) (but offer stronger isolation)
+
+Containers
+- Runs containers on the host OS 
+- Share the same OS (lightweight)
+- Has the app and it’s dependancies - like binaries and libraries  
+
+
+
+Docker vs K8? 
+
+Docker - runs containers and you manage them manually 
+
+K8 - orchestrates everything
+- where the containers run 
+- Automatically scaling containers up and down 
+- Makes sure containers are packed efficiently into nodes ( machines )
+
+
+
+What is k8 and why we use it ? 
+
+- System that automates how we handle containerised apps 
+- Originally came from google 
+- Makes sure these containers are put on machines ( nodes ) - scaling up and down 
+- K8 also replaces containers that fail in machines nodes 
+- K8 also handles things like load balancing , storage and updates 
+- Orchestrates everything 
+
+
+
+Enterprises and the changes they adopted ?
+
+Enterprises got tired of slow deployments so they adopted using micro services 
+-  Microservices  ( breaking app into separate functions/ services )
+- These microservices can be developed , deployed and scaled independently 
+
+But even when they put apps were put into containers they needed a tool to orchestrate them 
+- K8’s steer and orchestrates these containers 
