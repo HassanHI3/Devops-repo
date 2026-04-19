@@ -45,3 +45,47 @@ Enterprises got tired of slow deployments so they adopted using micro services
 
 But even when they put apps were put into containers they needed a tool to orchestrate them 
 - K8’s steer and orchestrates these containers 
+
+
+
+When using cloud based containers like EKS - have to use a K8 cluster 
+
+K8 cluster = provides the storage , computing , memory and networking resources to run a workload
+
+K8 cluster 
+- Master node ( brain )
+- Worker node ( muscle )
+
+
+k8 - regularly creates cloud specific resources / creates + manage pods 
+- Handles scaling up and down of deployments
+- It performs updates like rolling out a new version of an app 
+- It manages configurations
+- Exposes services externally or internally 
+- It checks cluster state and coordinates with controller manager + scheduler 
+
+
+
+MASTER NODE 
+1. Kube API server - front door for k8 
+2. Cloud controller manager = integrates k8 with cloud - translates for cloud provider api
+3. Cloud provider api = gateway for commands  
+4. ETCD - stores cluster state and data
+5. Kube controller manager - makes sure cluster stays in desired state 
+6. Kube scheduler - picks worker node to run a new pod - wrapper for >1 container sharing same storage + networking 
+
+
+WORKER NODE 1
+
+Kubelet = (node / machine) manager - creates and runs the pods  
+- Listens to instructions from the Ruben API server 
+- Make pods are running 
+- Starts containers using Docker/container runtime
+- Restarts them if they crash
+- Reports back status (healthy, failed, etc.)
+
+Kube-Proxy = handles networking for the pod 
+- Makes sure traffic reaches the right pod
+- Sets up routing rules (IPv4 tables )
+- Allows for pod-pod communication 
+- External traffic → correct pod
