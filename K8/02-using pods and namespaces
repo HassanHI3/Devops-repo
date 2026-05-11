@@ -12,7 +12,6 @@ NS - POD
 
 
 Create cluster + master control-plane node and worker node with yaml ?
-
 - kind create cluster —-config test-yaml —name k8-test-cluster 
 - Kubectl get nodes
 - Kubectl get pods 
@@ -21,12 +20,18 @@ Create cluster + master control-plane node and worker node with yaml ?
 
 
 Create deployment with a name and an image ?  (manages all the pods that are running the same image cluster wide) 
-
 - Kubectl create deployment (name) —-mage (nginx)
 - Kubectl get deploy 
 
 Create pods and put them in the default NS or their own NS and also describe them ?
-
 - Kubectl run pod —-name (new-pod) —-image (nginx) —- namespace (new-namespace)
 - kubectl create namespace <your-namespace-name>
 - Kind delete cluster —-name (k8-test-cluster )
+
+
+Create pods with an imperative command ? 
+- Kubectl run pod (name) —image= ()
+
+
+How to look at the yaml file of the pod you created ?
+- Kubectl get pod (name) -o yaml 
