@@ -89,3 +89,15 @@ Kube-Proxy = handles networking for the pod 
 - Sets up routing rules (IPv4 tables )
 - Allows for pod-pod communication 
 - External traffic → correct pod
+
+
+A pod = smallest unit in kubernetes
+- Represents one instance of an of an image of an app
+
+Pods can talk because they share the same : 
+- IP address and network namespace (ports and routing ) (for the containers inside the pod )( containers within same pod can communicate via local host)
+
+
+* kube proxy handles routing and load balancing of traffic between pods and services *  (pod to pod  OR  service to pod )
+
+= Create file , write yaml and kubectl apply -f yourfile.yaml
