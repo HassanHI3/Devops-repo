@@ -1,0 +1,53 @@
+What are deployments ?
+
+Deployments 
+- manage stateless applications (no memory of sessions needed) )( frontend /backend )
+- Is like a manager for your pods 
+- Can scale up and down & multiple pods updated instantly if need 
+- Instead creating pods 1by1 you tell the deployment how many pods to spin up 
+- pods are interchangable so if one crashes deployment replaces
+- Deployment + replica sets created together = manages number of pods for deployment 
+
+Deployment stategies: 
+- Supports rolling updates as it updates pods 1by1
+- canary releases (send a small percentage of traffic to new pods)
+- blue-green (switch all traffic at once)
+
+Layers for the deployment ?
+- Kube controller manager 
+- Deployment controller 
+- Deployment 
+- Replica sets = maintains number of pods 
+  
+Example 1: 
+Kube controller manager - controllers - deployment controller ( part of master mode + control plane)
+- Compares state with ETCD (stores cluster state 5 pods )
+- Looks over deployment and replaces the dead pod and spins up 
+- Rolling update decommissions one pod at a time while spinning new one up 
+
+Ways to create a deployment with replicas , ports / namespaces ?
+- kubectl create deployment (name) —-image () — port= <> —replicas= <>
+- kubectl create k8-deployment —image=nginx —replicas=2
+- kubectl create deployment nginx-deployment --image=nginx --replicas=3 --namespace=new-namespace
+
+
+What are replica sets ? 
+
+Replica sets - simplest kuberntes pod controller resource 
+- Maintain a given number of pods and if  one fails the replica sets with spin up a new instance to replace it 
+- Similar to deployment but cant do rolling updates
+- Not used as often as deployments are 
+- Deployment + replica sets created together = manages number of pods for deployment 
+
+Worker notes 
+- deployment  | replica Sets  - pods
+
+What commands to use for replicasets ?
+- kubectl create deployment () —image —replicas=5 
+- kubectl get pods 
+- kubectl delete po (pods name )
+- kubectl get replicasets
+
+So the replica sets are maintaining the replicas set in the deployment 
+
+  
