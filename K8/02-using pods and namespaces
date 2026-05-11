@@ -1,0 +1,32 @@
+Kind = kubernetes in docker = for local play 
+Namespace = a way of isolating groups of resources within a cluster 
+Deployment = manages all the pods that are running the same image cluster wide 
+
+Worker node 
+|
+Namespace () - pod (1/ more container running ) = isolated from the other namespaces 
+|
+NS - POD 
+|
+NS - POD
+
+
+Create cluster + master control-plane node and worker node with yaml ?
+
+- kind create cluster —-config test-yaml —name k8-test-cluster 
+- Kubectl get nodes
+- Kubectl get pods 
+- Kubectl Ns
+- kubectl get pods --namespace=my-namespace
+
+
+Create deployment with a name and an image ?  (manages all the pods that are running the same image cluster wide) 
+
+- Kubectl create deployment (name) —-mage (nginx)
+- Kubectl get deploy 
+
+Create pods and put them in the default NS or their own NS and also describe them ?
+
+- Kubectl run pod —-name (new-pod) —-image (nginx) —- namespace (new-namespace)
+- kubectl create namespace <your-namespace-name>
+- Kind delete cluster —-name (k8-test-cluster )
