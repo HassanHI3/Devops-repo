@@ -1,0 +1,58 @@
+Persistant volumes (PV) and Persistent volume claims (PVC) manage data storage for pods 
+
+Config Maps manage configuration settings for pods like environment (env )variables , URL’s and paths - basically all things not secrets 
+- Instead of HARDCODING configurations because they change based off env , you store them in Config Maps keeping the app flexible 
+
+ PV’s - data storage  Config Maps - configuration settings   
+= make deployment of pods dynamic and flexible 
+
+
+When using configs u can either pass them as env’s or you can mount them as volumes that point to the whole configMap 
+
+Kubectl create cm my-config —from-literal=APP_COLOUR=Blue                   creating a configMap called my-config and creating the env variables right there 
+
+
+Env:      
+- name:            
+Valuefrom                 
+ConfigKeyRef                          
+- name : APP_COLOUR                                   
+key : blue   
+
+Kubectl create cm my-config —from-file=nginx.conf               creating a configMap called my config from this file and mounting it 
+
+volumeMounts:                
+- name : config-volume                     
+mountpath: /etc/config  volume        
+
+volume:
+- name : config-volume                
+configMap:                         
+- name: my-config    
+
+
+Secrets 
+Secrets used to manage sensitive date inside the k8 cluster  K8 make sure only authorised pods can access Secrets 
+
+When a pod needs a secret K8 decodes It so the application can use it 
+Secrets can be mounted as volumes or exposed like env variable to your pods  
+*secrets aren’t encrypted by default but are Base64 (scrambled )encoded so they aren’t stored as plain text * 
+ 
+Kubectl create secret generic my-secret —from-literal=username=hassan 
+
+Env:      
+- name: SECRET_USERNAME           
+Valuefrom                 
+ConfigKeyRef                          
+- name : my-secret                                   
+key : username   
+
+ubectl create secret generic my-secret —from-file= ssh.txt = /.ssh.txt./vof  volume:
+    - name : secret-volume 
+         - secret :                   - secretName: my-secret    volumeMount:           - name : secret-volume                 mountpath: etc/secret-volume    kubectl apply -f secret-pod.yaml     This is to get to the secret and decode it to see what it is   kubectl get secrets 
+
+echo “xxxnxnxxn” | base64 -d                  this will give you the password decoded     This is to go inside the pod with bash and see the secret 
+
+kubectl get pod   kubectl exec it <pod name> --/bin/sh 
+
+Echo $$SECRET_USERNAME 
