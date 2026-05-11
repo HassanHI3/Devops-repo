@@ -1,0 +1,33 @@
+Pods are ephemeral = so they are temporary and disposable and not designed to last long
+
+
+Why do we need persistent storage in Kubernetes? 
+
+- If a pod running your database / frontend goes down the data needs to still be there.
+- If persistent storage isn’t there then the data for the database / frontend disappears 
+
+
+1. Ensures data reliability beyond pod lifecycle 
+ - So that when a pod is spun back up it can pick up where the last left off 
+
+2. Critical for stateful applications - keep track of info over time ( remembers info )
++ with persistent storage we ensure that everytime your app restarts it doesn’t start again from scratch 
+
+
+What is persistent volumes in k8 ?
+
+- Where the Persistent storage actually lives 
+- Provides storage SPECIFICALLY for applications in k8 
+- They hide the storage details ( local disk , cloud storage , it doesn’t care to hold that info )
+- K8 admins create these for apps to use 
+- PV’s have specific properties like (size , access modes ,  storage class )
+
+Pods claim persistent storage though PVC - persistent volume claims !!!
+
+
+How does a Persistent volume claim work ?
+
+1. Pod need storage so it make a PVC claim with specific properties 
+2. Cluster then looks for PV to bind to the PVC 
+3. PV found and bound to PVC 
+4. Pod uses the persistent storage from the PVC+PV  
