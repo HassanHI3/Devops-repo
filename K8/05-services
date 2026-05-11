@@ -1,0 +1,65 @@
+Kubernetes services: are a stable network endpoint that allow you to route traffic and access your pods no matter what.
+
+Services use labels to select the right pods and route traffic to them (i.e front-end pod )
+
+Services also handle all networking behind the scenes 
+
+
+K8 Services workflow ?
+
+1. Pods ( frontend pods , backend pods )
+2. Each pods is labeled ( app: frontend ,  app: backend )
+
+3. K8 service is created - then selects pods based on labels  
+  = the service for “app: frontend”  targets all frontend pods   
+
+4. K8 service provides stable IP / DNS name
+5. Traffic is sent to that service and is routed to the correct pods 
+
+* Traffic - USER gaining access or other services calling on each with *
+
+
+
+Why are services important ? 
+￼
+- They allow groups of pods to be connected / talk to each other 
+- I.e frontend , backend , database ( groups of pods )
+- Services use labels to identify different groups of pods 
+
+
+* if you want to scale or upgrade part of your app services services make sure that traffic is sent to the right group of pods w/out interruptions *
+
+
+What are the different types of services ?
+
+1. Cluster IP - gives you stable internal IP address - so pods can use to talk to each other inside the cluster  - FRONTEND - BACKEND 
+
+kubectl create deployment frontend —image nginx —port=80 (if you want replicas use —replicas) 
+kubectl create deployment backend —image nginx —port‎=80
+
+Kubectl expose deployment frontend —type=clusterIP --port 80 —name=my-frontend-service
+Kubectl expose deployment backend —type=clusterIP --port=80 —name=my-backend-service  
+
+
+How to edit a deployment yaml ?
+
+kubectl get service -o wide    kubectl edit deployment frontend 
+ 
+ 
+2. Node port - exposes your service on a specific port on each node inside the cluster = simple way to ensure accessibility from outside the cluster 
+
+- Client request to node ip address on node port 30000- above  
+- traffic is sent to node port on the worker node 
+- traffic is sent to relevant service 
+- traffic is sent to target port on the relevant pod 
+
+ kubectl create deployment frontend —image nginx —port=80  kubectl create deployment backend —image nginx —port‎ = 80
+Kubectl expose deployment frontend —type=NodePort --port 80 —name=my-frontend-service
+Kubectl expose deployment backend —type=NodePort --port=80 —name=my-backend-service 
+kubectl apply -f yourfile.yaml
+
+
+ 3.  Load balancer - typically used in cloud environments - so w/out a cluster in the cloud it wouldn’t work 
+
+- So if u create a Internal LB -  distributes traffic to your pods 
+- It automatically creates an external load balancer exposes service to the internet and distributes traffic to internal load balancer 
