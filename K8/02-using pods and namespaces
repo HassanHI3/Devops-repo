@@ -30,7 +30,7 @@ Create pods and put them in the default NS or their own NS and also describe the
 
 
 Create pods with an imperative command ? 
-- Kubectl run pod (name) —image= ()
+- Kubectl run pod (name) —-image= ()
 
 
 How to look at the yaml file of the pod you created ?
