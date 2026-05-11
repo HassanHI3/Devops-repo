@@ -1,0 +1,19 @@
+Stateful sets - used to manage stateful applications - where it is important to remember the session hsitory and data 
+
+Each pod has :
+- stable sticky identity (like mongo-0, mongo-1) 
+- persistent storage
+
+** If mongo-0 fails, it recreates mongo-0, not a random pod and that persistant data helps when a pod with a DB goes down. ( LINKED WITH PV , PVC )
+
+Deployment stategies ( Stateful sets ) : 
+- Rolling updates, but they happen one pod at a time to keep order and stability (like mongo-0 before mongo-1).
+- Canary or blue-green are less common due to state.
+
+
+
+DaemonSets -  They ensure that a specific pod runs on all (or selected) nodes.
+- Useful for cluster-wide services like monitoring or logging agents. Each node gets its own pod.
+
+Deployment stategies ( DaemonSets ) : 
+- Rolling uodate is the most common 
