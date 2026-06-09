@@ -101,3 +101,16 @@ Pods can talk because they share the same :
 * kube proxy handles routing and load balancing of traffic between pods and services *  (pod to pod  OR  service to pod )
 
 = Create file , write yaml and kubectl apply -f yourfile.yaml
+
+
+How containers run in K8's ?
+
+User sends a request to the Kube API server ( part of the control plane) to run a pod 
+
+The Kube API server and Kube scheduler then decide which worker node is going to run that pod based off resources/ constraints / effinity ect 
+
+The Kubelet (manager) on the chosen worker node then ensures the pod Is set. It does this through interacting with the container run time CRI-o via gRPC
+
+CRI-o ensures that the containers image is available to pull and uses RUNC to fork/clone & create the container environment that’s needed 
+
+Finally the pod is running on the host that is managed by the underlying linux kernel 
